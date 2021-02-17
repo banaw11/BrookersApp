@@ -1,0 +1,111 @@
+<h5>Sign-Up</h5>
+<nb-alert *ngIf="submitted && message" [outline]="statusMessage ? 'success' : 'danger'" role="alert">
+    <p class="alert-title">{{message}}</p>
+    <ul *ngIf="errors.length > 0" class="alert-message-list">
+        <li *ngFor="let error of errors" class="alert-message">{{error}}</li>
+    </ul>
+</nb-alert>
+<form #registerForm="ngForm" fxLayout="column" fxLayoutGap="20px" autocomplete="off" (ngSubmit)="register()" >
+    <div  class="form-group">
+        <label class="label" for="input-knownAs" col-form-label>Nick or full name</label>
+        <input nbInput
+        fullWidth
+        [(ngModel)]="user.knownAs"
+        #knownAs="ngModel"
+        name="knownAs"
+        id="input-knownAs"
+        fieldSize="large"
+        [status]="knownAs.touched ? (knownAs.invalid ? 'danger': 'success') : 'basic'"
+        shape="semi-round"
+        placeholder="Known as"
+        required
+        minlength="4"
+        maxlength="20">
+        <ng-container *ngIf="knownAs.invalid && knownAs.touched">
+            <p class="caption status-danger" *ngIf="knownAs.errors?.required">
+                Name is required !
+            </p>
+            <p class="caption status-danger" *ngIf="knownAs.errors?.minlength || knownAs.errors?.maxlength">
+                Name must be from 4 up to 20 characters
+            </p>
+        </ng-container>
+    </div>
+    <div  class="form-group">
+        <label class="label" for="input-email" col-form-label>Email address</label>
+        <input nbInput
+        fullWidth
+        [(ngModel)]="user.email"
+        #email="ngModel"
+        name="email"
+        id="input-email"
+        pattern=".+@.+\..+"
+        fieldSize="large"
+        [status]="email.touched ? (email.invalid ? 'danger': 'success') : 'basic'"
+        shape="semi-round"
+        placeholder="Email address"
+        required>
+        <ng-container *ngIf="email.invalid && email.touched">
+            <p class="caption status-danger" *ngIf="email.errors?.required">
+                Email address is required !
+            </p>
+            <p class="caption status-danger" *ngIf="email.errors?.pattern">
+                Email must be real !
+            </p>
+        </ng-container>
+    </div>
+    <div class="form-group">
+        <label class="label" for="input-password" col-form-label>Password</label>
+        <input nbInput
+        fullWidth
+        [(ngModel)]="user.password"
+        #password="ngModel"
+        name="password"
+        id="input-password"
+        type="password"
+        fieldSize="large"
+        [status]="password.touched ? (password.invalid ? 'danger' : 'success') : 'basic'"
+        shape="semi-round"
+        placeholder="Password"
+        required
+        maxlength="15"
+        minlength="6">
+        <ng-container *ngIf="password.invalid && password.touched">
+            <p class="caption status-danger" *ngIf="password.errors?.required">
+                Password is required !
+            </p>
+            <p class="caption status-danger" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+                Password should be from 6 up to 15 characters
+            </p>
+        </ng-container>
+    </div>
+    <div class="form-group">
+        <label class="label" for="input-rePassword" col-form-label>Confirm password</label>
+        <input nbInput
+        fullWidth
+        [(ngModel)]="user.rePassword"
+        #rePassword="ngModel"
+        name="rePassword"
+        id="input-rePassword"
+        type="password"
+        fieldSize="large"
+        [status]="rePassword.touched ? (rePassword.invalid || password.value != rePassword.value ? 'danger' : 'success') : 'basic'"
+        shape="semi-round"
+        placeholder="Confirm password"
+        required
+        [disabled]="password.invalid">
+        <ng-container *ngIf="(rePassword.invalid && rePassword.touched) || (rePassword.value != password.value && rePassword.dirty)">
+            <p class="caption status-danger strong" *ngIf="rePassword.errors?.required">
+                Password is required !
+            </p>
+            <p class="caption status-danger strong" *ngIf="rePassword.value != password.value && !rePassword.errors?.required">
+                Passwords do not match !
+            </p>
+        </ng-container>
+    </div>
+    <div class="form-group" fxLayoutAlign="center">
+        <button class="form-control" nbButton hero shape="semi-round" status="success" type="submit" [disabled]="!registerForm.valid || password.value != rePassword.value">Register</button>
+    </div>            
+    
+</form>
+
+    

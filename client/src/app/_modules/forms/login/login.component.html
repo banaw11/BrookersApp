@@ -1,0 +1,58 @@
+    <h5>Sign-In</h5>
+    <nb-alert *ngIf="submitted && message" [outline]="statusMessage ? 'success' : 'danger'" role="alert">
+        <p class="alert-title">{{message}}</p>
+        <ul *ngIf="errors.length > 0" class="alert-message-list">
+            <li *ngFor="let error of errors" class="alert-message">{{error}}</li>
+        </ul>
+    </nb-alert>
+    <form #loginForm="ngForm" fxLayout="column" fxLayoutGap="20px" autocomplete="off" (ngSubmit)="login()" >
+        <div  class="form-group">
+            <label class="label" for="input-email" col-form-label>Email address</label>
+            <input nbInput
+            fullWidth
+            [(ngModel)]="user.email"
+            #email="ngModel"
+            name="email"
+            id="input-email"
+            pattern=".+@.+\..+"
+            fieldSize="large"
+            [status]="email.touched ? (email.invalid ? 'danger': 'success') : 'basic'"
+            shape="semi-round"
+            placeholder="Email address"
+            required>
+            <ng-container *ngIf="email.invalid && email.touched">
+                <p class="caption status-danger" *ngIf="email.errors?.required">
+                    Email address is required !
+                </p>
+                <p class="caption status-danger" *ngIf="email.errors?.pattern">
+                    Email must be real !
+                </p>
+            </ng-container>
+        </div>
+        <div class="form-group">
+            <label class="label" for="input-password" col-form-label>Password</label>
+            <input nbInput
+            fullWidth
+            [(ngModel)]="user.password"
+            #password="ngModel"
+            name="password"
+            id="input-password"
+            type="password"
+            fieldSize="large"
+            [status]="password.touched ? (password.invalid ? 'danger' : 'success') : 'basic'"
+            shape="semi-round"
+            placeholder="Password"
+            required>
+            <ng-container *ngIf="password.invalid && password.touched">
+                <p class="caption status-danger" *ngIf="password.errors?.required">
+                    Password is required !
+                </p>
+            </ng-container>
+        </div>
+        <div class="form-group" fxLayoutAlign="center">
+            <button class="form-control" nbButton hero shape="semi-round" status="info" type="submit" [disabled]="!loginForm.valid">Login</button>
+        </div>            
+        
+    </form>
+
+        

@@ -1,0 +1,32 @@
+<nb-layout>
+    <nb-layout-header>
+        <app-nav-bar></app-nav-bar>
+    </nb-layout-header>
+    <nb-layout-column fxLayout="column" fxLayoutAlign="center center">
+        <nb-flip-card [showToggleButton]='false' [flipped]='flipped'>
+            <nb-card-front>
+                <nb-card >
+                    <nb-card-body >
+                       <app-login></app-login>
+                    </nb-card-body>
+                    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+                        <p class="caption status-info">Don't have an account ?</p>
+                        <nb-icon icon="arrow-circle-right-outline" (click)="flipped = !flipped"></nb-icon> 
+                    </div>
+                </nb-card>
+            </nb-card-front>
+            <nb-card-back>
+                <nb-card >
+                    <nb-card-body>
+                        <app-register></app-register>
+                    </nb-card-body>
+                    <div  fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <nb-icon icon="arrow-circle-left-outline" (click)="flipped = !flipped"></nb-icon> 
+                        <p class="caption status-info">Already have an account ?</p>
+                    </div>
+                </nb-card>
+            </nb-card-back>
+        </nb-flip-card>
+        
+    </nb-layout-column>
+</nb-layout>
