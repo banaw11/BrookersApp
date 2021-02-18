@@ -16,6 +16,7 @@ import { NavBarComponent } from './components/nav/nav-bar/nav-bar.component';
 import { NavMenuComponent } from './components/nav/nav-menu/nav-menu.component';
 import { LoginComponent } from './_modules/forms/login/login.component';
 import { RegisterComponent } from './_modules/forms/register/register.component';
+import { FormsCardComponent } from './_modules/forms-card/forms-card.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { RegisterComponent } from './_modules/forms/register/register.component'
     NavBarComponent,
     NavMenuComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    FormsCardComponent
   ],
   imports: [
     HttpClientModule,
