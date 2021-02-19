@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace API.Entities
 {
-    public class AppUser : IdentityUser<int>
+    public class AppRole : IdentityRole<int>
     {
-        public float Balance { get; set; }
-        public string Avatar { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

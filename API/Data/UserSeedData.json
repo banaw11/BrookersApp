@@ -1,0 +1,62 @@
+﻿[
+  {
+    "UserName": "Fields",
+    "Email": "fields@gmail.com",
+    "Balance": 40546.34,
+    "Avatar": "https://randomuser.me/api/portraits/men/20.jpg"
+  },
+  {
+    "UserName": "Lambert",
+    "Email": "lambert@gmail.com",
+    "Balance": 37642.73,
+    "Avatar": "https://randomuser.me/api/portraits/men/42.jpg"
+  },
+  {
+    "UserName": "Franco",
+    "Email": "franco@gmail.com",
+    "Balance": 33939.53,
+    "Avatar": "https://randomuser.me/api/portraits/men/35.jpg"
+  },
+  {
+    "UserName": "Jacobs",
+    "Email": "jacobs@gmail.com",
+    "Balance": 37982.98,
+    "Avatar": "https://randomuser.me/api/portraits/men/20.jpg"
+  },
+  {
+    "UserName": "Bentley",
+    "Email": "bentley@gmail.com",
+    "Balance": 11935.00,
+    "Avatar": "https://randomuser.me/api/portraits/men/75.jpg"
+  },
+  {
+    "UserName": "Whitney",
+    "Email": "whitney@gmail.com",
+    "Balance": 49992.23,
+    "Avatar": "https://randomuser.me/api/portraits/women/42.jpg"
+  },
+  {
+    "UserName": "Bobbi",
+    "Email": "bobbi@gmail.com",
+    "Balance": 23944.84,
+    "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
+  },
+  {
+    "UserName": "Judy",
+    "Email": "judy@gmail.com",
+    "Balance": 13536.86,
+    "Avatar": "https://randomuser.me/api/portraits/women/53.jpg"
+  },
+  {
+    "UserName": "Lucia",
+    "Email": "lucia@gmail.com",
+    "Balance": 34472.92,
+    "Avatar": "https://randomuser.me/api/portraits/women/9.jpg"
+  },
+  {
+    "UserName": "Heidi",
+    "Email": "heidi@gmail.com",
+    "Balance": 15009.73,
+    "Avatar": "https://randomuser.me/api/portraits/women/41.jpg"
+  }
+]
