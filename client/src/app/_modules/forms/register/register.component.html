@@ -2,30 +2,30 @@
 <nb-alert *ngIf="submitted && message" [outline]="statusMessage ? 'success' : 'danger'" role="alert">
     <p class="alert-title">{{message}}</p>
     <ul *ngIf="errors.length > 0" class="alert-message-list">
-        <li *ngFor="let error of errors" class="alert-message">{{error}}</li>
+        <li *ngFor="let error of errors" class="alert-message">{{error?.description}}</li>
     </ul>
 </nb-alert>
 <form #registerForm="ngForm" fxLayout="column" fxLayoutGap="20px" autocomplete="off" (ngSubmit)="register()" >
     <div  class="form-group">
-        <label class="label" for="input-knownAs" col-form-label>Nick or full name</label>
+        <label class="label" for="input-userName" col-form-label>Nick or full name</label>
         <input nbInput
         fullWidth
-        [(ngModel)]="user.knownAs"
-        #knownAs="ngModel"
-        name="knownAs"
-        id="input-knownAs"
+        [(ngModel)]="user.userName"
+        #userName="ngModel"
+        name="userName"
+        id="input-userName"
         fieldSize="large"
-        [status]="knownAs.touched ? (knownAs.invalid ? 'danger': 'success') : 'basic'"
+        [status]="userName.touched ? (userName.invalid ? 'danger': 'success') : 'basic'"
         shape="semi-round"
         placeholder="Known as"
         required
         minlength="4"
         maxlength="20">
-        <ng-container *ngIf="knownAs.invalid && knownAs.touched">
-            <p class="caption status-danger" *ngIf="knownAs.errors?.required">
+        <ng-container *ngIf="userName.invalid && userName.touched">
+            <p class="caption status-danger" *ngIf="userName.errors?.required">
                 Name is required !
             </p>
-            <p class="caption status-danger" *ngIf="knownAs.errors?.minlength || knownAs.errors?.maxlength">
+            <p class="caption status-danger" *ngIf="userName.errors?.minlength || userName.errors?.maxlength">
                 Name must be from 4 up to 20 characters
             </p>
         </ng-container>

@@ -26,19 +26,18 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-   this.accountService.login(this.user).subscribe(response => {
-    this.router.navigateByUrl('/home');
     this.submitted=true;
+    this.errors =[];
+   this.accountService.login(this.user).subscribe(response => {
+    this.statusMessage=true;
+    this.message="Login successful";
+    setTimeout(() => {
+      this.router.navigateByUrl('/home');
+    }, 500);
   }, error => {
-    this.errors = error;
-    if(this.errors.length>0){
-      this.statusMessage=false;
-      this.message="Login unsuccessful";
-    }
-    else{
-      this.statusMessage=true;
-      this.message="Login successful";
-    }
+    this.errors.push(error.error);
+    this.statusMessage=false;
+    this.message="Login unsuccesful";
    })
   }
 

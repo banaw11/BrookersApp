@@ -1,7 +1,7 @@
     <h5>Sign-In</h5>
-    <nb-alert *ngIf="submitted && message" [outline]="statusMessage ? 'success' : 'danger'" role="alert">
+    <nb-alert *ngIf="submitted" [outline]="statusMessage ? 'success' : 'danger'" role="alert">
         <p class="alert-title">{{message}}</p>
-        <ul *ngIf="errors.length > 0" class="alert-message-list">
+        <ul  class="alert-message-list">
             <li *ngFor="let error of errors" class="alert-message">{{error}}</li>
         </ul>
     </nb-alert>

@@ -1,19 +1,22 @@
-<nb-layout>
-    <nb-layout-header fixed>
-        <app-nav-bar></app-nav-bar>
+<nb-layout [ngStyle.xs]="{'height' : '200vh'}">
+    <nb-layout-header fixed [ngStyle.xs]="{'height': '10vh'}">
+            <app-nav-bar></app-nav-bar>
     </nb-layout-header>
     <nb-layout-column  >
-        <section fxLayout="row" fxLayout.xs="column" style="height: 100vh;">
+        <section fxLayout="row" fxLayout.xs="column" [ngStyle.xs]="{'height': '90vh'}">
             <div fxFlex.gt-xs="60" fxLayoutAlign.gt-xs="space-around start">
                 <h1>Intro column</h1>
+                <div fxShow="false" fxShow.xs="true">
+                    <button nbButton outline status="success" (click)="forms.scrollIntoView()">Sign-In</button>
+                </div>
             </div>
             <div fxFlex.gt-xs="40" fxLayoutAlign="center center" fxShow.xs="false" fxShow="true">
                 <app-forms-card ></app-forms-card>
             </div>
         </section>
-        <section fxShow.xs="true" fxShow="false" style="height: 100vh;">
+        <section #forms fxShow.xs="true" fxShow="false" [ngStyle.xs]="{'height': '90vh'}">
             <app-forms-card></app-forms-card>
         </section>
     </nb-layout-column>
-       
+
 </nb-layout>

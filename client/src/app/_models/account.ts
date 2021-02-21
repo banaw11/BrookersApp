@@ -1,7 +1,6 @@
 export interface Account {
+    userName?: string,
     email?: string,
     password?: string,
     rePassword?: string,
-    fullName?: string,
-    knownAs?: string,
 }

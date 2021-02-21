@@ -10,35 +10,33 @@ import { Account } from 'src/app/_models/account';
 })
 export class RegisterComponent implements OnInit {
   user: Account = {
+    userName: "",
     email: "",
     password: "",
-    rePassword: "",
-    knownAs: "",
+    rePassword: ""
   };
 
   statusMessage? : boolean = true;
   submitted: boolean = false;
   message?: string;
-  errors: string[] = [];
+  errors: any[] = [];
   constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   register(): void{
+    this.submitted=true;
     this.accountService.register(this.user).subscribe( response => {
-      this.router.navigateByUrl('/home');
-      this.submitted=true;
+      this.statusMessage=true;
+      this.message="Register successful";
+      setTimeout(()=>{
+        this.router.navigateByUrl('/home');
+      },500)
     }, error => {
-      this.errors = error;
-      if(this.errors.length>0){
-        this.statusMessage=false;
-        this.message="Register unsuccessful";
-      }
-      else{
-        this.statusMessage=true;
-        this.message="Register successful";
-      }
+      this.errors = error.error;
+      this.statusMessage=false;
+      this.message="Register unsuccessful";
     })
   }
 }
