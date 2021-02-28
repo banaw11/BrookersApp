@@ -8,9 +8,12 @@ namespace API.Data
     public class DataContext : IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, 
         AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        
         public DataContext( DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Friend> Friends { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,11 +25,21 @@ namespace API.Data
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
 
+            builder.Entity<AppUser>()
+                .HasMany(f => f.Friends)
+                .WithOne(u => u.User)
+                .HasForeignKey(ui => ui.UserId);
+                
+
             builder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
+
+            builder.Entity<Friend>()
+                .HasKey(f => f.Id);
+
         }
     }
 }

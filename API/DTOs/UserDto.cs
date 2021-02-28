@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace API.DTOs
 {
@@ -11,5 +8,6 @@ namespace API.DTOs
         public string Token { get; set; }
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public ICollection<FriendDto> Friends { get; set; }
     }
 }

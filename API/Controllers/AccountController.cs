@@ -17,13 +17,15 @@ namespace API.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
+        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IUserRepository userRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
          [HttpPost("register")]
@@ -41,7 +43,7 @@ namespace API.Controllers
             {
                 UserName = user.UserName,
                 Token = await _tokenService.CreateToken(user),
-                Email = user.Email
+                Email = user.Email,
             };
         }
 
@@ -56,13 +58,10 @@ namespace API.Controllers
 
             if (!result.Succeeded) return Unauthorized("Invalid e-mail or password");
 
-            return new UserDto
-            {
-                UserName = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                Email = user.NormalizedEmail.ToLower(),
-                Avatar = user.Avatar
-            };
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Token = await _tokenService.CreateToken(user);
+            userDto.Friends = await _userRepository.GetFriends(user.Id);
+            return userDto;
         }
 
         private async Task<bool> UserNameExists(string username)

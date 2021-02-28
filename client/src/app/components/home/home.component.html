@@ -1,5 +1,28 @@
 <nb-layout>
-    <nb-layout-header fixed>
-        <app-change-theme fxFlex></app-change-theme>
+    <nb-layout-header fixed > 
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFill="100">
+            <nb-actions >
+                <nb-action icon="menu-2-outline" (click)="toggle()"></nb-action>
+                <nb-action>BrookersApp</nb-action>
+            </nb-actions>
+            <nb-actions>
+                <nb-action [nbContextMenu]="userMenu" nbContextMenuTag="user-menu">
+                    <nb-user [name]="user.userName" [picture]="user.avatar"></nb-user>
+                </nb-action>
+            </nb-actions>
+            
+        </div>
     </nb-layout-header>
+    <nb-sidebar class="menu-sidebar" tag="menu-sidebar" >
+        <nb-menu [items]="menuItems"></nb-menu>
+    </nb-sidebar>
+    <nb-layout-column>
+        <router-outlet></router-outlet>
+    </nb-layout-column>
+    <nb-sidebar right class="menu-sidebar" tag="chat-sidebar">
+        <nb-sidebar-header> Chat
+        </nb-sidebar-header>
+        <nb-user *ngFor="let friend of user.friends" [picture]="friend.avatar" [name]="friend.friendName"></nb-user>
+    </nb-sidebar>
+    
 </nb-layout>
