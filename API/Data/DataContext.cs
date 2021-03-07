@@ -14,6 +14,7 @@ namespace API.Data
         }
 
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,7 +30,6 @@ namespace API.Data
                 .HasMany(f => f.Friends)
                 .WithOne(u => u.User)
                 .HasForeignKey(ui => ui.UserId);
-                
 
             builder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)
@@ -39,6 +39,23 @@ namespace API.Data
 
             builder.Entity<Friend>()
                 .HasKey(f => f.Id);
+
+            builder.Entity<Message>()
+               .HasKey(k => k.Id);
+
+            builder.Entity<Message>()
+                .HasOne(x => x.Sender)
+                .WithMany(x => x.MessagesSent)
+                .HasForeignKey(x => x.SenderId);
+
+
+            builder.Entity<Message>()
+                .HasOne(x => x.Receiver)
+                .WithMany(x => x.MessagesReceived)
+                .HasForeignKey(x => x.ReceiverId);
+
+           
+                
 
         }
     }

@@ -6,9 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbSelectModule, NbActionsModule, NbTabsetModule, NbCardModule, NbButtonModule, NbInputModule, NbAlertModule,
- NbIconModule, NbMenuModule, NbContextMenuModule, NbSidebarModule, NbSidebarService, NbUserModule } from '@nebular/theme';
+ NbIconModule, NbMenuModule, NbContextMenuModule, NbSidebarModule, NbSidebarService, NbUserModule, NbAccordionModule, NbChatModule, NbListModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { ChangeThemeComponent } from './_modules/change-theme/change-theme.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -20,6 +20,8 @@ import { FormsCardComponent } from './_modules/forms-card/forms-card.component';
 import { CommunityComponent } from './components/community/community.component';
 import { InvestmentsComponent } from './components/investments/investments.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { ChatSidebarComponent } from './_modules/chat-sidebar/chat-sidebar.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     CommunityComponent,
     InvestmentsComponent,
     SettingsComponent,
+    ChatSidebarComponent,
   ],
   imports: [
     HttpClientModule,
@@ -59,9 +62,15 @@ import { SettingsComponent } from './components/settings/settings.component';
     NbMenuModule.forRoot(),
     NbContextMenuModule,
     NbSidebarModule,
-    NbUserModule
+    NbUserModule,
+    NbAccordionModule,
+    NbChatModule,
+    NbListModule
   ],
-  providers: [NbSidebarService],
+  providers: [
+    NbSidebarService, 
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,5 +10,7 @@ namespace API.Entities
         public string Avatar { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<Message> MessagesSent { get; set; }
     }
 }

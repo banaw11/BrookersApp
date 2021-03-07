@@ -1,0 +1,34 @@
+<div fxLayout="column" fxLayoutAlign="space-between stretch" style="padding: 1rem; height:100%;">
+       
+        <nb-card  size="tiny" >
+            <nb-list *ngIf="(friendList$ | async).length > 0">
+                <nb-list-item  *ngFor="let friend of friendList$ | async">
+                    <button nbButton outline  size="small" status="primary" fullWidth [value]='friend?.friendId' (click)='setFriend(friend)'>
+                        <nb-user [picture]="friend?.avatar" [name]='friend?.friendName' size="medium"></nb-user>
+                    </button>
+                </nb-list-item>
+            </nb-list>
+            <nb-alert *ngIf='(friendList$ |async).length < 1' accent="danger" fxLayoutAlign="center">
+                No friends were found
+            </nb-alert>
+        </nb-card>
+
+<nb-chat 
+[title]='messageThread.value.chatMember?.friendName != null ?
+ messageThread.value.chatMember.friendName : "Choose friend to chat"' 
+ size="medium" >
+    <nb-chat-message *ngFor="let msg of messageThread.value.messages"
+    type="text"
+    [message]="msg.content"
+    [reply]="msg.senderId === messageThread.value.chatMember.friendId ? true : false"
+    [avatar]="messageThread.value.chatMember.avatar"
+    [date]="msg.sendDate"
+    [dateFormat]="'HH:MM'"
+    >
+
+    </nb-chat-message>
+    <nb-chat-form>
+
+    </nb-chat-form>
+</nb-chat>
+</div>

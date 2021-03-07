@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NbMenuItem, NbMenuService, NbSidebarService } from '@nebular/theme';
-import { filter, map, take } from 'rxjs/operators';
+import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@nebular/theme';
+import { BehaviorSubject, Observable, observable } from 'rxjs';
+import { filter, flatMap, map, take } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Friend } from 'src/app/_models/friend';
 import { User } from 'src/app/_models/user';
+import { ChatSidebarComponent } from 'src/app/_modules/chat-sidebar/chat-sidebar.component';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +15,11 @@ import { User } from 'src/app/_models/user';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit  {
+  @ViewChild(ChatSidebarComponent) sidebarChat: ChatSidebarComponent;
+   menuSbState = new BehaviorSubject<NbSidebarState>('compacted');
+   chatSbState = new BehaviorSubject<NbSidebarState>('collapsed');
 user: User;
+searchString = new BehaviorSubject<string>(null);
 userMenu = [{title: 'Logout'}];
 compacted: boolean= true;
 menuItems: NbMenuItem[] = [
@@ -38,6 +45,7 @@ menuItems: NbMenuItem[] = [
     link: "/home/settings"
   }
 ]
+
   constructor(private sidebarService: NbSidebarService, public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
@@ -45,12 +53,13 @@ menuItems: NbMenuItem[] = [
    }
   ngOnInit(): void {
     this.onMenuClick();
+
   }
 
-
-  toggle(){
-    this.sidebarService.toggle(this.compacted, 'menu-sidebar');
-    this.compacted = !this.compacted;
+  toggleChat(tag: string){
+    tag === 'menu-sidebar' ?
+    this.menuSbState.value === 'compacted' ? this.menuSbState.next('collapsed') : this.menuSbState.next('compacted'):
+    this.chatSbState.value === 'collapsed' ? this.chatSbState.next('expanded') : this.chatSbState.next('collapsed');
   }
 
   onMenuClick(){
@@ -65,4 +74,7 @@ menuItems: NbMenuItem[] = [
     })
   }
 
+  onKeyUp(event : any){
+    this.sidebarChat.search(event.target.value);
+  }
 }

@@ -29,6 +29,18 @@ namespace API.Repositories
             return _mapper.Map<ICollection<FriendDto>>(result);
         }
 
+        public async Task<ICollection<MessageDto>> GetMessagesThread(int userId, int memberId)
+        {
+            var messagesReceived = await _context.Users.Where(x => x.Id == userId).Select(x => x.MessagesReceived).FirstOrDefaultAsync();
+            var messagesSent = await _context.Users.Where(x => x.Id == userId).Select(x => x.MessagesSent).FirstOrDefaultAsync();
+            var messages = Enumerable.Concat(
+                messagesReceived.Where(x => x.SenderId == memberId),
+                messagesSent.Where(x => x.ReceiverId == memberId)
+                ).OrderBy(x => x.SendDate).ToList();
+
+            return _mapper.Map<ICollection<MessageDto>>(messages);
+        }
+
         public async Task<AppUser> GetUserByIdAsync(int userId)
         {
             return await _context.Users.FindAsync(userId);

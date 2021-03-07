@@ -15,6 +15,9 @@ namespace API.Helpers
             CreateMap<RegisterDto, AppUser>();
             CreateMap<Friend, FriendDto>();
             CreateMap<AppUser, UserDto>();
+            CreateMap<Message, MessageDto>()
+                .ReverseMap();
+            CreateMap<Message, MessageDto>();
 
 
 
