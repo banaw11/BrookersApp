@@ -3,6 +3,6 @@ import { Friend } from "./friend";
 import { Message } from "./message";
 
 export interface MessageThread{
-    chatMember: Friend,
+    chatMember: Observable<Friend>,
     messages: Observable<Message[]>,
 }

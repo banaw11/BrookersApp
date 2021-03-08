@@ -14,14 +14,14 @@
         </nb-card>
 
 <nb-chat 
-[title]='messageThread.value.chatMember?.friendName != null ?
- messageThread.value.chatMember.friendName : "Choose friend to chat"' 
+[title]='(messageThread.chatMember | async)?.friendName != null ?
+(messageThread.chatMember | async)?.friendName : "Choose friend to chat"' 
  size="medium" >
-    <nb-chat-message *ngFor="let msg of messageThread.value.messages | async"
+    <nb-chat-message *ngFor="let msg of (messageThread?.messages |async)"
     type="text"
     [message]="msg.content"
-    [reply]="msg.senderId === messageThread.value.chatMember.friendId ? true : false"
-    [avatar]="messageThread.value.chatMember.avatar"
+    [reply]="msg.senderId === (messageThread.chatMember | async)?.friendId ? false : true"
+    [avatar]="(messageThread.chatMember | async)?.avatar"
     [date]="msg.sendDate"
     [dateFormat]="'HH:MM'"
     >
