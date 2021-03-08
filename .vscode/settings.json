@@ -1,0 +1,5 @@
+{
+    "csharpextensions.privateMemberPrefix": "_",
+    "csharpextensions.useThisForCtorAssignments": false,
+    "files.autoSave": "afterDelay"
+}

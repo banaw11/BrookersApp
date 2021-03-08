@@ -24,7 +24,5 @@ baseUrl = environment.apiUrl;
     this.currentUserSource.next(null);
   }
 
-  getMessageThread(memberId : number){
-    return this.http.get<Message[]>(this.baseUrl + "user/"+ memberId);
-  }
+  
 }

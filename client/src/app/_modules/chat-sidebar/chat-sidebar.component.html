@@ -17,7 +17,7 @@
 [title]='messageThread.value.chatMember?.friendName != null ?
  messageThread.value.chatMember.friendName : "Choose friend to chat"' 
  size="medium" >
-    <nb-chat-message *ngFor="let msg of messageThread.value.messages"
+    <nb-chat-message *ngFor="let msg of messageThread.value.messages | async"
     type="text"
     [message]="msg.content"
     [reply]="msg.senderId === messageThread.value.chatMember.friendId ? true : false"
@@ -27,7 +27,7 @@
     >
 
     </nb-chat-message>
-    <nb-chat-form>
+    <nb-chat-form (send)="sendMessage($event)">
 
     </nb-chat-form>
 </nb-chat>

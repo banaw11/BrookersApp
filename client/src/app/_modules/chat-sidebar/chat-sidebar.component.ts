@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { ChatService } from 'src/app/services/chat.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
 import { Message } from 'src/app/_models/message';
 import { MessageThread } from 'src/app/_models/messageThread';
+import { NewMessage } from 'src/app/_models/newMessage';
 import { User } from 'src/app/_models/user';
 
 @Component({
@@ -14,10 +16,11 @@ import { User } from 'src/app/_models/user';
 })
 export class ChatSidebarComponent implements OnInit {
   user: User;
-  messageThread = new BehaviorSubject<MessageThread>({chatMember: null,messages:[]});
+  messageThread = new BehaviorSubject<MessageThread>({chatMember: null,messages: null});
   private friendList = new BehaviorSubject<Friend[]>([]);
   friendList$ = this.friendList.asObservable();
-  constructor(private usersService: UsersService) { 
+
+  constructor(private usersService: UsersService, private chatService: ChatService) { 
     this.usersService.currentUser$.pipe(take(1)).subscribe( (user: User) =>{
       this.user = user;
       this.friendList.next(user.friends);
@@ -36,9 +39,39 @@ getResults(m : string){
 }
 
 setFriend(friend : Friend){
-  this.usersService.getMessageThread(friend.friendId).pipe().subscribe( (result: Message[]) =>{
-    this.messageThread.next({chatMember: friend, messages: result});
-  })
+  this.messageThread.next(
+    {
+      chatMember: friend, 
+      messages: this.chatService.getMessageThread(friend.friendId)});
+}
+
+sendMessage(event: any){
+  this.chatService.sendMessage(this.createMessage(event.message)).pipe().subscribe( response => {
+      // if(response){
+      //   this.messageThread.subscribe(msgT => {
+      //     msgT.messages.pipe(take(1)).subscribe(msgs => {
+      //       msgs.push(response);
+      //       this.messageThread.next(msgT);
+      //     })
+      //   });
+      //   this.messageThread.value.messages.pipe(
+      //     map((msgs : Message[]) =>{
+      //       msgs.push(response);
+      //       this.messageThread.next({chatMember: this.messageThread.value.chatMember,messages : });
+      //     })
+      //   )
+      // }
+  }, error => {
+    console.log(error.error);
+  }
+  )
+}
+
+createMessage(content: string){
+ let message : NewMessage = {
+    receiverId: this.messageThread.value.chatMember.friendId,
+    content: content};
+  return message;
 }
 
 }
