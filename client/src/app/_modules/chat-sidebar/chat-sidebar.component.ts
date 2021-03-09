@@ -58,19 +58,24 @@ sendMessage(event: any){
   let message: NewMessage = this.createMessage(event.message, friendId); 
   this.chatService.sendMessage(message).pipe().subscribe(msg => {
       if(msg){
-        this.messages$.subscribe(msgs => {
-          msgs.push(msg);
-        }).unsubscribe();
-        this.messages$.pipe(map(msgs => this.messagesSource.next(msgs)));
+        this.addMessage(msg);
       }
     })
 }
+
 
 createMessage(content: string, id: number){
  let message : NewMessage = {
     receiverId: id,
     content: content};
   return message;
+}
+
+addMessage(msg: Message){
+  this.messages$.subscribe(msgs => {
+    msgs.push(msg);
+  }).unsubscribe();
+  this.messages$.pipe(map(msgs => this.messagesSource.next(msgs)));
 }
 
 }
