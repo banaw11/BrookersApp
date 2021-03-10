@@ -8,7 +8,7 @@ namespace API.Entities
     public class Connection
     {
         public int Id { get; set; }
-        public int ConnectionId { get; set; }
+        public string ConnectionId { get; set; }
         public AppUser User { get; set; }
         public int UserId { get; set; }
     }

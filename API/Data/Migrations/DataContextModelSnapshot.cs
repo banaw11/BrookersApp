@@ -143,8 +143,8 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ConnectionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");

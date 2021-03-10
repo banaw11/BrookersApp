@@ -16,20 +16,20 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
 
-        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IUserRepository userRepository)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IUnitOfWork unitOfWork, IMapper mapper)
         {
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
-            _mapper = mapper;
-            _userRepository = userRepository;
         }
 
-         [HttpPost("register")]
-         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserNameExists(registerDto.UserName)) return BadRequest(ThrownErrors("User name is taken"));
             if (await UserEmailExists(registerDto.Email)) return BadRequest(ThrownErrors("Address email already exist"));
@@ -60,7 +60,7 @@ namespace API.Controllers
 
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = await _tokenService.CreateToken(user);
-            userDto.Friends = await _userRepository.GetFriends(user.Id);
+            userDto.Friends = await _unitOfWork.UserRepository.GetFriends(user.Id);
             return userDto;
         }
 

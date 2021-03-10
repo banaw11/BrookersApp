@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210309133313_ConnectionEntityAdded")]
+    [Migration("20210310102727_ConnectionEntityAdded")]
     partial class ConnectionEntityAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,8 +145,8 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ConnectionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");

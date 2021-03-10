@@ -12,5 +12,12 @@ namespace API.Interfaces
         Task<AppUser> GetUserByIdAsync(int userId);
         Task<ICollection<FriendDto>> GetFriends(int userId);
         Task<ICollection<MessageDto>> GetMessagesThread(int userId, int memberId);
+        void AddConnection (Connection connection);
+        Task<ICollection<Connection>> GetConnections(AppUser user);
+        Task<Connection> GetConnection(string connectionId);
+        void DeleteConnection (string connectionId);
+        Task<ICollection<int>> GetOnlineUsers(int userId);
+        Task<bool> SaveChangesAsync();
+
     }
 }
