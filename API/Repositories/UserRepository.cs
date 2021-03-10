@@ -65,10 +65,10 @@ namespace API.Repositories
             return _mapper.Map<ICollection<MessageDto>>(messages);
         }
 
-        public async Task<ICollection<int>> GetOnlineUsers(int userId)
+        public async Task<ICollection<int>> GetOnlineFriends(int userId)
         {
             return await _context.Connections
-                .Where(x => x.UserId != userId)
+                .Where(x => x.UserId != userId && x.User.Friends.Select(x => x.FriendId).Contains(userId))
                 .GroupBy(x => x.User)
                 .Select(x => x.FirstOrDefault())
                 .Select(x => x.UserId)

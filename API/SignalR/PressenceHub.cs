@@ -19,14 +19,14 @@ namespace API.SignalR
         public override async Task OnConnectedAsync()
         {
             var isOnline = await IsUserOnilne();
-            if(isOnline) await Clients.Caller.SendAsync("GetOnilneUsers", 
-                await _unitOfWork.UserRepository.GetOnlineUsers(Context.User.GetUserId()));
+            if(isOnline) await Clients.Caller.SendAsync("GetOnilneFriends", 
+                await _unitOfWork.UserRepository.GetOnlineFriends(Context.User.GetUserId()));
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var isOfline = await UserDisconnected(Context.User.GetUserId(), Context.ConnectionId);
-            if(isOfline) await Clients.Others.SendAsync("UserIsOfline", Context.User.GetUserId());
+            if(isOfline) await Clients.Others.SendAsync("FriendIsOfline", Context.User.GetUserId());
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -52,7 +52,7 @@ namespace API.SignalR
             var isOnline = await UserConnected(Context.User.GetUserId(), Context.ConnectionId);
             if(isOnline) 
             {
-                await Clients.Others.SendAsync("UserIsOnline",Context.User.GetUserId());
+                await Clients.Others.SendAsync("FriendIsOnline",Context.User.GetUserId());
                 return true;
             }
             return false;

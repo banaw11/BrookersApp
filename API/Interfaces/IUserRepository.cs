@@ -16,7 +16,7 @@ namespace API.Interfaces
         Task<ICollection<Connection>> GetConnections(AppUser user);
         Task<Connection> GetConnection(string connectionId);
         void DeleteConnection (string connectionId);
-        Task<ICollection<int>> GetOnlineUsers(int userId);
+        Task<ICollection<int>> GetOnlineFriends(int userId);
         Task<bool> SaveChangesAsync();
 
     }
