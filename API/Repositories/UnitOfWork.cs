@@ -18,6 +18,7 @@ namespace API.Repositories
         public IUserRepository UserRepository => new UserRepository(_context, _mapper);
 
         public IMessageRepository MessageRepository => new MessageRepository(_context);
+        public IConnectionRepository ConnectionRepository => new ConnectionRepository(_context);
 
         public async Task<bool> Complete()
         {

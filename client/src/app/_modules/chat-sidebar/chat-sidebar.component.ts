@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, pipe } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { ChatService } from 'src/app/services/chat.service';
+import { PressenceService } from 'src/app/services/pressence.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
 import { Message } from 'src/app/_models/message';
@@ -26,15 +27,19 @@ export class ChatSidebarComponent implements OnInit {
   }
   private friendList = new BehaviorSubject<Friend[]>([]);
   friendList$ = this.friendList.asObservable();
-
-  constructor(private usersService: UsersService, private chatService: ChatService) { 
+  pressenceList: number[];
+  constructor(private usersService: UsersService, private chatService: ChatService, private pressenceService: PressenceService) { 
     this.usersService.currentUser$.pipe(take(1)).subscribe( (user: User) =>{
       this.user = user;
       this.friendList.next(user.friends);
     }).unsubscribe();
+    this.pressenceService.onlineFriends$.pipe(take(1)).subscribe( list => {
+      this.pressenceList = list;
+    }).unsubscribe();
   }
 
   ngOnInit(): void {
+    this.setStatuses();
   }
 
   search(str: string){
@@ -76,6 +81,24 @@ addMessage(msg: Message){
     msgs.push(msg);
   }).unsubscribe();
   this.messages$.pipe(map(msgs => this.messagesSource.next(msgs)));
+}
+
+setStatuses(){
+  let tempList: Friend[];
+    this.friendList$.subscribe(fList => {
+      fList.forEach( f => {
+        this.pressenceList.includes(f.friendId) ? f.status='success' : f.status='basic';
+      })
+      tempList = fList;
+    }).unsubscribe();
+  this.friendList.next(tempList);
+}
+
+getStatus(friendId: number){
+  let tempList: Friend[];
+    this.friendList$.subscribe(fList => {
+      console.log(fList.find(x=> x.friendId == friendId));
+    })
 }
 
 }

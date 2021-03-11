@@ -38,13 +38,22 @@ export class PressenceService {
         })
       })
 
-      this.hubConnection.on('GetOnlineFriends', (userIds: number[]) => {
-        this.onlineFriendsSource.next(userIds)
+      this.hubConnection.on("GetOnlineFriends", userIds => {
+        this.onlineFriendsSource.next(userIds);
       })
   }
 
   stopHubConnection(){
-    this.hubConnection.stop().catch(error => console.log(error));
+    if(this.hubConnection){
+      this.hubConnection.stop().catch(error => console.log(error));
+    }
+    
+  }
+
+  tryReconnectHubConnection(user: User){
+    if(!this.hubConnection){
+      this.createHubConnection(user);
+    }
   }
 
 }

@@ -23,30 +23,6 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
-        public void AddConnection(Connection connection)
-        {
-            _context.Connections.Add(connection);
-        }
-
-        public async void DeleteConnection(string connectionId)
-        {
-            _context.Connections.Remove(await GetConnection(connectionId));
-        }
-
-        public async Task<Connection> GetConnection(string connectionId)
-        {
-            return await _context.Connections
-                .Where(x => x.ConnectionId == connectionId)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<ICollection<Connection>> GetConnections(AppUser user)
-        {
-            return await _context.Connections
-                .Where(x => x.User == user)
-                .ToListAsync();
-        }
-
         public async Task<ICollection<FriendDto>> GetFriends(int userId)
         {
             var result = await _context.Users.Where(x => x.Id == userId).Select(x => x.Friends).FirstOrDefaultAsync();
@@ -65,24 +41,10 @@ namespace API.Repositories
             return _mapper.Map<ICollection<MessageDto>>(messages);
         }
 
-        public async Task<ICollection<int>> GetOnlineFriends(int userId)
-        {
-            return await _context.Connections
-                .Where(x => x.UserId != userId && x.User.Friends.Select(x => x.FriendId).Contains(userId))
-                .GroupBy(x => x.User)
-                .Select(x => x.FirstOrDefault())
-                .Select(x => x.UserId)
-                .ToListAsync();
-        }
-
         public async Task<AppUser> GetUserByIdAsync(int userId)
         {
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
     }
 }

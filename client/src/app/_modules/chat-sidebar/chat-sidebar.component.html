@@ -3,7 +3,7 @@
         <nb-card  size="tiny" >
             <nb-list *ngIf="(friendList$ | async).length > 0">
                 <nb-list-item  *ngFor="let friend of friendList$ | async">
-                    <button nbButton outline  size="small" status="primary" fullWidth [value]='friend?.friendId' (click)='setFriend(friend)'>
+                    <button nbButton outline  size="small" [status]='friend?.status' fullWidth [value]='friend?.friendId' (click)='setFriend(friend)'>
                         <nb-user [picture]="friend?.avatar" [name]='friend?.friendName' size="medium"></nb-user>
                     </button>
                 </nb-list-item>

@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { LocationStrategy, PlatformLocation } from '@angular/common';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@nebular/theme';
 import { BehaviorSubject, Observable, observable } from 'rxjs';
 import { filter, flatMap, map, take } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
+import { PressenceService } from 'src/app/services/pressence.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
 import { User } from 'src/app/_models/user';
@@ -46,14 +48,19 @@ menuItems: NbMenuItem[] = [
   }
 ]
 
-  constructor(private sidebarService: NbSidebarService, public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router) {
+  constructor( public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router
+    , private pressenceService: PressenceService, private location: LocationStrategy) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
+    });
+    history.pushState(null,null, window.location.href);
+    this.location.onPopState(() => {
+      history.pushState(null,null, window.location.href);
     })
    }
   ngOnInit(): void {
     this.onMenuClick();
-
+    this.getUserFromLocalStorage();
   }
 
   toggleChat(tag: string){
@@ -76,5 +83,10 @@ menuItems: NbMenuItem[] = [
 
   onKeyUp(event : any){
     this.sidebarChat.search(event.target.value);
+  }
+
+  getUserFromLocalStorage(){
+    let user:User = JSON.parse(localStorage.getItem('user'));
+    this.pressenceService.tryReconnectHubConnection(user);
   }
 }

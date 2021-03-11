@@ -19,14 +19,15 @@ namespace API.SignalR
         public override async Task OnConnectedAsync()
         {
             var isOnline = await IsUserOnilne();
-            if(isOnline) await Clients.Caller.SendAsync("GetOnilneFriends", 
-                await _unitOfWork.UserRepository.GetOnlineFriends(Context.User.GetUserId()));
+            var onlineFriends = await _unitOfWork.ConnectionRepository.GetOnlineFriends(Context.User.GetUserId());
+             await Clients.Caller.SendAsync("GetOnlineFriends", onlineFriends);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var isOfline = await UserDisconnected(Context.User.GetUserId(), Context.ConnectionId);
-            if(isOfline) await Clients.Others.SendAsync("FriendIsOfline", Context.User.GetUserId());
+            var friendsConnection = await _unitOfWork.ConnectionRepository.GetFriendConnectionIDs(Context.User.GetUserId());
+            if(isOfline) await Clients.Clients(friendsConnection).SendAsync("FriendIsOfline", Context.User.GetUserId());
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -40,7 +41,7 @@ namespace API.SignalR
             var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
             var connection = CreateConnection(user);
             
-            if (user != null) _unitOfWork.UserRepository.AddConnection(connection);
+            if (user != null) _unitOfWork.ConnectionRepository.AddConnection(connection);
             if(_unitOfWork.hasChanges())
                 return await Task.FromResult(await _unitOfWork.Complete());
             
@@ -52,7 +53,8 @@ namespace API.SignalR
             var isOnline = await UserConnected(Context.User.GetUserId(), Context.ConnectionId);
             if(isOnline) 
             {
-                await Clients.Others.SendAsync("FriendIsOnline",Context.User.GetUserId());
+                var friendsConnection = await _unitOfWork.ConnectionRepository.GetFriendConnectionIDs(Context.User.GetUserId());
+                await Clients.Clients(friendsConnection).SendAsync("FriendIsOnline",Context.User.GetUserId());
                 return true;
             }
             return false;
@@ -62,7 +64,7 @@ namespace API.SignalR
         {
             var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
 
-            if(user != null) _unitOfWork.UserRepository.DeleteConnection(connectionId);
+            if(user != null) _unitOfWork.ConnectionRepository.DeleteConnection(connectionId);
             if(_unitOfWork.hasChanges())
                 return await Task.FromResult(await _unitOfWork.Complete());   
     
