@@ -1,6 +1,8 @@
 ﻿using API.Data;
 using API.Entities;
 using API.Interfaces;
+using API.SignalR._interfaces;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

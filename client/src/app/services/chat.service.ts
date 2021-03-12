@@ -35,10 +35,13 @@ messageThread: MessageThread = {
   }
 
   searchFriend(name: string){
+    name != '' ? this.getResults(name) : this.getFriends(); 
+  }
+
+  getResults(name: string){
     let tempList: Friend[];
     this.friendList$.subscribe(fList => {
-      fList.filter(f => { return f.friendName.toLowerCase().startsWith(name.toLowerCase())});
-      tempList = fList;
+      tempList = fList.filter(f => { return f.friendName.toLowerCase().startsWith(name.toLowerCase())});
     }).unsubscribe();
     this.friendList.next(tempList);
   }
@@ -76,10 +79,24 @@ messageThread: MessageThread = {
   }
 
   addMessage(msg: Message){
-    this.messages$.subscribe(msgs => {
-      msgs.push(msg);
-    }).unsubscribe();
-    this.messages$.pipe(map(msgs => this.messagesSource.next(msgs)));
+      this.messages$.subscribe(msgs => {
+        msgs.push(msg);
+      }).unsubscribe();
+      this.messages$.pipe(map(msgs => this.messagesSource.next(msgs)));
+  }
+
+  getMessage(msg: Message){
+    let currentFriendId: number;
+    this.chatMember$.subscribe(f => {
+      if(f != null){
+        currentFriendId = f.friendId;
+      }
+    }).unsubscribe()
+    if(currentFriendId === msg.senderId){
+      this.addMessage(msg);
+      return true;
+    }
+    return false;
   }
 
   setStatuses(){

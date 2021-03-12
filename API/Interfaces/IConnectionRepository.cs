@@ -7,7 +7,7 @@ namespace API.Interfaces
     public interface IConnectionRepository
     {
         void AddConnection (Connection connection);
-        Task<ICollection<Connection>> GetConnections(AppUser user);
+        Task<ICollection<string>> GetConnections(AppUser user);
         Task<Connection> GetConnection(string connectionId);
         void DeleteConnection (string connectionId);
         Task<ICollection<int>> GetOnlineFriends(int userId);

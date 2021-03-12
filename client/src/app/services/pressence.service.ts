@@ -45,6 +45,12 @@ export class PressenceService {
         this.onlineFriendsSource.next(userIds);
         this.chatService.pressenceList = userIds;
       })
+
+      this.hubConnection.on("GetNewMessage", message => {
+        if(!this.chatService.getMessage(message)){
+          console.log("Notify about new message");
+        }
+      })
   }
 
   stopHubConnection(){

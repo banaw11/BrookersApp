@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using API.Data;
 using API.Interfaces;
+using API.SignalR._interfaces;
 using AutoMapper;
 
 namespace API.Repositories
@@ -9,6 +10,7 @@ namespace API.Repositories
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IUnitOfHub _unitOfHub;
         public UnitOfWork(DataContext context, IMapper mapper)
         {
             _mapper = mapper;

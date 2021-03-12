@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using API.SignalR._interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +15,10 @@ namespace API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public ChatController(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IUnitOfHub _unitOfHub;
+        public ChatController(IMapper mapper, IUnitOfWork unitOfWork, IUnitOfHub unitOfHub)
         {
+            _unitOfHub = unitOfHub;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -43,10 +46,15 @@ namespace API.Controllers
             };
 
             _unitOfWork.MessageRepository.AddMessage(message);
-            if(_unitOfWork.hasChanges())
-                if(await _unitOfWork.Complete())    
-                    return Ok(_mapper.Map<MessageDto>(message));
+            if (_unitOfWork.hasChanges())
+                if (await _unitOfWork.Complete())
+                {
+                    var messageDto = _mapper.Map<MessageDto>(message);
+                    NotifyNewMessage(messageDto, receiver);
+                    return Ok(messageDto);
+                }
                     
+
             return BadRequest("Failed to send message");
         }
 
@@ -55,6 +63,11 @@ namespace API.Controllers
         {
             var messages = await _unitOfWork.UserRepository.GetMessagesThread(User.GetUserId(), memberId);
             return Ok(messages);
+        }
+
+        private async void NotifyNewMessage(MessageDto message, AppUser user)
+        {
+            var result = await _unitOfHub.MessageService.SendMessage(message, user);
         }
     }
 }

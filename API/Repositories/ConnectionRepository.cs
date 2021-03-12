@@ -33,10 +33,11 @@ namespace API.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Connection>> GetConnections(AppUser user)
+        public async Task<ICollection<string>> GetConnections(AppUser user)
         {
             return await _context.Connections
                .Where(x => x.User == user)
+               .Select(x => x.ConnectionId)
                .ToListAsync();
         }
 
