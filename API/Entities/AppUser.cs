@@ -13,5 +13,6 @@ namespace API.Entities
         public ICollection<Message> MessagesReceived { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Connection> Connections { get; set; }
+        public Notification Notification { get; set; }
     }
 }

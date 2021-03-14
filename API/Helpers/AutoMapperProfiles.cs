@@ -13,12 +13,16 @@ namespace API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<RegisterDto, AppUser>();
-            CreateMap<Friend, FriendDto>();
-            CreateMap<AppUser, UserDto>();
+            CreateMap<Friend, FriendDto>()
+                .ReverseMap();
+            CreateMap<AppUser, UserDto>()
+                .ReverseMap();
             CreateMap<Message, MessageDto>()
                 .ReverseMap();
-            CreateMap<Message, MessageDto>();
-
+            CreateMap<Notification, NotificationDto>()
+                .ReverseMap();
+            CreateMap<UnreadMessage, UnreadMessageDto>()
+                .ReverseMap();
 
 
         }

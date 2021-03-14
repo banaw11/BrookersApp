@@ -5,6 +5,7 @@ import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@ne
 import { BehaviorSubject, Observable, observable } from 'rxjs';
 import { filter, flatMap, map, take } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { PressenceService } from 'src/app/services/pressence.service';
 import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
@@ -49,7 +50,7 @@ menuItems: NbMenuItem[] = [
 ]
 
   constructor( public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router
-    , private pressenceService: PressenceService, private location: LocationStrategy) {
+    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
     });
