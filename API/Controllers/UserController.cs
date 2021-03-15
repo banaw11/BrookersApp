@@ -23,6 +23,12 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{userName}", Name = "GetProfile")]
+        public async Task<ActionResult<ProfileDto>> GetProfile(string userName)
+        {
+            var currentUser = User.GetUserName();
 
+            return await _unitOfWork.UserRepository.GetUserProfile(userName, isOwner: currentUser.ToLower() == userName.ToLower());
+        }
     }
 }

@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Notification } from '../_models/notification';
+import { Profile } from '../_models/profile';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -31,6 +32,10 @@ baseUrl = environment.apiUrl;
     }).unsubscribe();
     temp.notification = notification;
     this.currentUserSource.next(temp);
+  }
+
+  getProfile(userName: string){
+    return this.http.get<Profile>(this.baseUrl+ 'users/' + userName);
   }
 
 }

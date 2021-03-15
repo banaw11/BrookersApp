@@ -23,6 +23,8 @@ import { InvestmentsComponent } from './components/investments/investments.compo
 import { SettingsComponent } from './components/settings/settings.component';
 import { ChatSidebarComponent } from './_modules/chat-sidebar/chat-sidebar.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileDetailsComponent } from './_modules/profile-details/profile-details.component';
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     InvestmentsComponent,
     SettingsComponent,
     ChatSidebarComponent,
+    ProfileComponent,
+    ProfileDetailsComponent,
   ],
   imports: [
     HttpClientModule,

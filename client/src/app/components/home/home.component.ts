@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit  {
    chatSbState = new BehaviorSubject<NbSidebarState>('collapsed');
 user: User;
 searchString = new BehaviorSubject<string>(null);
-userMenu = [{title: 'Logout'}];
+userMenu = [{title: 'Logout'}, {title: 'Profile'}];
 compacted: boolean= true;
 menuItems: NbMenuItem[] = [
   {
@@ -80,6 +80,9 @@ menuItems: NbMenuItem[] = [
       if(title === 'Logout'){
         this.accountservice.logout();
         this.router.navigateByUrl('');
+      }
+      else{
+        this.router.navigate(['/home/profile',this.user.userName]);
       }
     })
   }
