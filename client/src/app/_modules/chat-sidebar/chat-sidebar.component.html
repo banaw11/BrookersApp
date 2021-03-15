@@ -3,8 +3,19 @@
         <nb-card  size="tiny" >
             <nb-list *ngIf="(chatService.friendList$ | async)?.length > 0">
                 <nb-list-item  *ngFor="let friend of chatService.friendList$ | async">
-                    <button nbButton outline  size="small" [status]='friend?.status' fullWidth [value]='friend?.friendId' (click)='setFriend(friend)'>
-                        <nb-user [picture]="friend?.avatar" [name]='friend?.friendName' size="medium"></nb-user>
+                    <button nbButton outline  size="medium" [status]='friend?.status' fullWidth>
+                        <nb-actions size="medium" fullWidth>
+                            <nb-action>
+                                <nb-user [picture]="friend?.avatar" [name]='friend?.friendName'></nb-user>
+                            </nb-action>
+                            <nb-action icon="message-circle-outline" 
+                                [badgeDot]="notificationService.isUnreadMessage(friend.friendId)"
+                                badgePosition="top start"
+                                badgeStatus="danger"
+                                (click)='setFriend(friend)'>
+                            </nb-action>
+                            <nb-action icon="person"></nb-action>
+                        </nb-actions>
                     </button>
                 </nb-list-item>
             </nb-list>
@@ -22,8 +33,6 @@
     [message]="msg.content"
     [reply]="msg.senderId === (chatService.messageThread.chatMember | async)?.friendId ? false : true"
     [avatar]="(chatService.messageThread.chatMember | async)?.avatar"
-    [date]="msg.sendDate"
-    [dateFormat]="'HH:MM'"
     >
 
     </nb-chat-message>

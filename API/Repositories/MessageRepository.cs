@@ -36,9 +36,11 @@ namespace API.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveChangesAsync()
+        public async Task<Message> MarkAsRead(int messageId)
         {
-            return await _context.SaveChangesAsync() > 0;
+            var message = await _context.Messages.FindAsync(messageId);
+            message.IsRead = true;
+            return message;
         }
     }
 }

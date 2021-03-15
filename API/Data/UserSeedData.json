@@ -10,10 +10,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Lambert",
@@ -26,10 +23,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Franco",
@@ -42,10 +36,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Jacobs",
@@ -58,10 +49,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Bentley",
@@ -74,10 +62,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Whitney",
@@ -90,10 +75,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Bobbi",
@@ -146,10 +128,7 @@
         "FriendName": "Heidi",
         "Avatar": "https://randomuser.me/api/portraits/women/41.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Judy",
@@ -162,10 +141,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Lucia",
@@ -178,10 +154,7 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   },
   {
     "UserName": "Heidi",
@@ -194,9 +167,6 @@
         "FriendName": "Bobbie",
         "Avatar": "https://randomuser.me/api/portraits/women/22.jpg"
       }
-    ],
-    "Notification": {
-      "UnreadMessages": []
-    }
+    ]
   }
 ]

@@ -70,5 +70,13 @@ namespace API.SignalR
     
             return false;
         }
+
+        public async Task MarkAsReadMessage (int messageId)
+        {
+            var message = await _unitOfWork.MessageRepository.MarkAsRead(messageId);
+            _unitOfWork.Update(message);
+            if(_unitOfWork.hasChanges())
+                await _unitOfWork.Complete();
+        }
     }
 }

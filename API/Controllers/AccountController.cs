@@ -35,7 +35,6 @@ namespace API.Controllers
             if (await UserEmailExists(registerDto.Email)) return BadRequest(ThrownErrors("Address email already exist"));
 
             var user = _mapper.Map<AppUser>(registerDto);
-            user.Notification = new Notification();
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
 
@@ -44,7 +43,7 @@ namespace API.Controllers
                 UserName = user.UserName,
                 Token = await _tokenService.CreateToken(user),
                 Email = user.Email,
-                Notification = _mapper.Map<NotificationDto>(user.Notification)
+                Notification = new NotificationDto {UnreadMessages = new List<UnreadMessageDto>()}
             };
         }
 
@@ -62,7 +61,7 @@ namespace API.Controllers
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = await _tokenService.CreateToken(user);
             userDto.Friends = await _unitOfWork.UserRepository.GetFriends(user.Id);
-            userDto.Notification = await _unitOfWork.UserRepository.GetNotifications(user.Id);
+            userDto.Notification = await _unitOfWork.NotificationRepository.GetNotifications(user.Id);
             return userDto;
         }
 

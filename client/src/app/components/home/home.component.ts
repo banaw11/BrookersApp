@@ -5,6 +5,7 @@ import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@ne
 import { BehaviorSubject, Observable, observable } from 'rxjs';
 import { filter, flatMap, map, take } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
+import { ChatService } from 'src/app/services/chat.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { PressenceService } from 'src/app/services/pressence.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -50,7 +51,7 @@ menuItems: NbMenuItem[] = [
 ]
 
   constructor( public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router
-    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService) {
+    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService, private chatService: ChatService) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
     });
@@ -68,6 +69,7 @@ menuItems: NbMenuItem[] = [
     tag === 'menu-sidebar' ?
     this.menuSbState.value === 'compacted' ? this.menuSbState.next('collapsed') : this.menuSbState.next('compacted'):
     this.chatSbState.value === 'collapsed' ? this.chatSbState.next('expanded') : this.chatSbState.next('collapsed');
+    this.chatService.cleanMessageThread();
   }
 
   onMenuClick(){

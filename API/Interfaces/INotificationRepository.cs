@@ -9,7 +9,6 @@ namespace API.Interfaces
 {
    public interface INotificationRepository
     {
-        void RemoveUnreadMessageNotification(int messageId);
-        void CreateUnreadMessageNotification(Message message, AppUser user);
+        Task<NotificationDto> GetNotifications (int userId);
     }
 }

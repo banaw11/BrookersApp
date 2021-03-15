@@ -3,8 +3,10 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Message } from '../_models/message';
 import { User } from '../_models/user';
 import { ChatService } from './chat.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class PressenceService {
   private onlineFriendsSource = new BehaviorSubject<number[]>([]);
   onlineFriends$ = this.onlineFriendsSource.asObservable();
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private notificationService: NotificationService) { }
 
   createHubConnection(user: User){
     this.hubConnection = new HubConnectionBuilder()
@@ -46,11 +48,16 @@ export class PressenceService {
         this.chatService.pressenceList = userIds;
       })
 
-      this.hubConnection.on("GetNewMessage", message => {
-        if(!this.chatService.getMessage(message)){
-          console.log("Notify about new message");
-        }
+      this.hubConnection.on("GetNewMessage", (message : Message) => {
+        this.chatService.getMessage(message) ? 
+        this.markAsRead(message.id) :
+          this.notificationService.addUnreadMessage(message) 
+          
       })
+  }
+
+  async markAsRead(messageId: number){
+    return this.hubConnection.invoke("MarkAsReadMessage", messageId).catch(error => console.error(error));
   }
 
   stopHubConnection(){

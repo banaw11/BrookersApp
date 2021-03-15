@@ -16,8 +16,6 @@ namespace API.Data
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Connection> Connections { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
-        public DbSet<UnreadMessage> UnreadMessages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -64,20 +62,6 @@ namespace API.Data
                  .HasOne(x => x.User)
                  .WithMany(x => x.Connections)
                  .HasForeignKey(x => x.UserId);
-
-            builder.Entity<Notification>()
-                .HasKey(x => x.Id);
-
-            builder.Entity<Notification>()
-                .HasOne(x => x.User)
-                .WithOne(x => x.Notification)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
-
-            builder.Entity<Notification>()
-                .HasMany(x => x.UnreadMessages)
-                .WithOne(x => x.Notification)
-                .HasForeignKey(x => x.NotificationId);
 
         }
     }

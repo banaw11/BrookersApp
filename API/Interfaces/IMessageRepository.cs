@@ -10,6 +10,6 @@ namespace API.Interfaces
     {
         void AddMessage(Message message);
         Task<ICollection<Message>> GetMessages(int currentUserId, int otherUserId);
-        Task<bool> SaveChangesAsync();
+        Task<Message> MarkAsRead(int messageId);
     }
 }

@@ -22,25 +22,16 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
-        public async void CreateUnreadMessageNotification(Message message, AppUser user)
+        public async Task<NotificationDto> GetNotifications(int userId)
         {
-            var notification = await _context.Users.Where(x => x.Id == user.Id).Select(x => x.Notification).SingleOrDefaultAsync();
-            var unreadMessage = new UnreadMessage
-            {
-                MessageId = message.Id,
-                SenderId = message.SenderId,
-                Notification = notification
-            };
-
-             _context.UnreadMessages.Add(unreadMessage);
+            var notification = new NotificationDto();
+            var unreadMessages = await _context.Messages
+                .Where(x => x.ReceiverId == userId && x.IsRead == false)
+                .Select(x => new UnreadMessageDto {MessageId = x.Id, SenderId = x.SenderId})
+                .ToListAsync();
+            notification.UnreadMessages = unreadMessages;
+            return notification;
         }
 
-
-        public async void RemoveUnreadMessageNotification(int messageId)
-        {
-            var unreadMessage = await _context.UnreadMessages
-                .Where(x => x.MessageId == messageId).FirstOrDefaultAsync();
-            _context.UnreadMessages.Remove(unreadMessage);
-        }
     }
 }

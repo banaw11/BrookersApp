@@ -50,8 +50,8 @@ namespace API.Controllers
                 if (await _unitOfWork.Complete())
                 {
                     var messageDto = _mapper.Map<MessageDto>(message);
-                    if(await NotifyNewMessage(message, receiver))
-                        return Ok(messageDto);
+                    await _unitOfHub.MessageService.SendMessage(message, receiver);
+                    return Ok(messageDto);
                 }
                     
             return BadRequest("Failed to send message");
@@ -62,21 +62,6 @@ namespace API.Controllers
         {
             var messages = await _unitOfWork.UserRepository.GetMessagesThread(User.GetUserId(), memberId);
             return Ok(messages);
-        }
-
-        private async Task<bool> NotifyNewMessage(Message message, AppUser user)
-        {
-            var result = await _unitOfHub.MessageService.SendMessage(message, user);
-            if (result) return result;
-           
-            _unitOfWork.NotificationRepository.CreateUnreadMessageNotification(message, user);
-            if (_unitOfWork.hasChanges())
-                if (await _unitOfWork.Complete())
-                    return !result;
-
-            return result;
-
-           
         }
     }
 }

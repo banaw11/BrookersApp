@@ -7,6 +7,7 @@ import { Friend } from '../_models/friend';
 import { Message } from '../_models/message';
 import { MessageThread } from '../_models/messageThread';
 import { NewMessage } from '../_models/newMessage';
+import { UnreadMessage } from '../_models/unreadMessage';
 import { UsersService } from './users.service';
 
 @Injectable({
@@ -115,4 +116,11 @@ messageThread: MessageThread = {
         fList.find(x=> x.friendId == friendId).status = status;
       })
   }
+
+  cleanMessageThread(){
+    this.chatMemberSource.value ? this.chatMemberSource.next(null) : null ;
+    this.messagesSource.value ? this.messagesSource.next(null) : null ;
+  }
+
+
 }

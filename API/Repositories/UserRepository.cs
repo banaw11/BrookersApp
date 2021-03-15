@@ -41,17 +41,6 @@ namespace API.Repositories
             return _mapper.Map<ICollection<MessageDto>>(messages);
         }
 
-        public async Task<NotificationDto> GetNotifications(int userId)
-        {
-            var notification = await _context.Notifications
-                .Where(x => x.UserId == userId)
-                .FirstOrDefaultAsync();
-            notification.UnreadMessages = await _context.UnreadMessages
-                .Where(x => x.NotificationId == notification.Id)
-                .ToListAsync();
-            return _mapper.Map<NotificationDto>(notification);
-        }
-
         public async Task<AppUser> GetUserByIdAsync(int userId)
         {
             return await _context.Users.FindAsync(userId);

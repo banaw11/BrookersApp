@@ -5,13 +5,14 @@ import { User } from '../_models/user';
 import { map } from 'rxjs/operators'
 import { UsersService } from './users.service';
 import { PressenceService } from './pressence.service';
+import { ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   baseUrl=environment.apiUrl;
-  constructor(private http: HttpClient, private usersService: UsersService, private pressenceService: PressenceService) { }
+  constructor(private http: HttpClient, private usersService: UsersService, private pressenceService: PressenceService, private chatService: ChatService) { }
 
   register(model: any){
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
@@ -43,5 +44,6 @@ export class AccountService {
     localStorage.removeItem('user');
     this.usersService.logoutUser();
     this.pressenceService.stopHubConnection();
+    this.chatService.cleanMessageThread();
   }
 }

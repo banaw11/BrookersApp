@@ -19,11 +19,6 @@ namespace API.Helpers
                 .ReverseMap();
             CreateMap<Message, MessageDto>()
                 .ReverseMap();
-            CreateMap<Notification, NotificationDto>()
-                .ReverseMap();
-            CreateMap<UnreadMessage, UnreadMessageDto>()
-                .ReverseMap();
-
 
         }
     }
