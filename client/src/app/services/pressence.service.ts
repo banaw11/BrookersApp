@@ -54,7 +54,10 @@ export class PressenceService {
         this.chatService.getMessage(message) ? 
         this.markAsRead(message.id) :
           this.notificationService.addUnreadMessage(message) 
-          
+      })
+
+      this.hubConnection.on("AddMessage", (message: Message) => {
+        this.chatService.getMessage(message);
       })
 
       this.hubConnection.on("UnreadMessagesRefreshed", (notification: Notification) => {

@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpPost("new-message")]
-        public async Task<ActionResult<MessageDto>> NewMessage(NewMessageDto newMessageDto)
+        public async Task<ActionResult> NewMessage(NewMessageDto newMessageDto)
         {
             var sender = await _unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
 
@@ -49,9 +49,8 @@ namespace API.Controllers
             if (_unitOfWork.hasChanges())
                 if (await _unitOfWork.Complete())
                 {
-                    var messageDto = _mapper.Map<MessageDto>(message);
-                    await _unitOfHub.MessageService.SendMessage(message, receiver);
-                    return Ok(messageDto);
+                    await _unitOfHub.MessageService.SendMessage(message, receiver, sender);
+                    return Ok();
                 }
                     
             return BadRequest("Failed to send message");

@@ -64,19 +64,11 @@ messageThread: MessageThread = {
     let message : NewMessage = {
       receiverId: friendId,
       content: content};
-    this.sendMessage(message).pipe(take(1)).subscribe(msg => {
-      if(msg){
-        this.addMessage(msg);
-      }
-    })
+    this.sendMessage(message);
   }
 
   sendMessage(message: NewMessage){
-    return this.http.post(this.baseUrl + "chat/new-message", message).pipe(
-      map((msg : Message) => {
-        return msg;
-      })
-    )
+    this.http.post(this.baseUrl + "chat/new-message", message).subscribe();
   }
 
   addMessage(msg: Message){
@@ -93,7 +85,7 @@ messageThread: MessageThread = {
         currentFriendId = f.friendId;
       }
     }).unsubscribe()
-    if(currentFriendId === msg.senderId){
+    if(currentFriendId === msg.senderId || currentFriendId === msg.receiverId){
       this.addMessage(msg);
       return true;
     }

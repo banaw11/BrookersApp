@@ -7,6 +7,7 @@ namespace API.SignalR._interfaces
 {
     public interface IMessageService
     {
-        Task<bool> SendMessage(Message message, AppUser user);
+        Task AddMessage(MessageDto message, AppUser sedner);
+        Task SendMessage(Message message, AppUser receiver, AppUser sender);
     }
 }
