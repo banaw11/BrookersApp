@@ -76,7 +76,16 @@ namespace API.SignalR
             var message = await _unitOfWork.MessageRepository.MarkAsRead(messageId);
             _unitOfWork.Update(message);
             if(_unitOfWork.hasChanges())
-                await _unitOfWork.Complete();
+                if(await _unitOfWork.Complete())
+                    await RefreshNotification();
+        }
+
+        private async Task RefreshNotification()
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(Context.User.GetUserId());
+            var connections = await _unitOfWork.ConnectionRepository.GetConnections(user);
+            var notification = await _unitOfWork.NotificationRepository.GetNotifications(user.Id);
+            await Clients.Clients(connections).SendAsync("UnreadMessagesRefreshed", notification);
         }
     }
 }

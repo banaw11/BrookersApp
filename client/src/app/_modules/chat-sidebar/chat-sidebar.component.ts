@@ -36,16 +36,13 @@ sendMessage(event: any){
 
 markAsRead(){
   let unreadMessages : UnreadMessage[];
-  let messageIDs : number[] = [];
   this.chatService.chatMember$.subscribe(friend => {
     unreadMessages = this.notificationService.getUnreadMessages(friend.friendId)
   }).unsubscribe();
   if(unreadMessages.length > 0){
     unreadMessages.forEach(element => {
-      this.pressenceService.markAsRead(element.messageId) ?
-        messageIDs.push(element.messageId) : null
+      this.pressenceService.markAsRead(element.messageId)
     });
-    messageIDs.length > 0 ? this.notificationService.markAsReadMessage(messageIDs) : null
   }
 }
 

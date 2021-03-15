@@ -4,9 +4,11 @@ import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Message } from '../_models/message';
+import { Notification } from '../_models/notification';
 import { User } from '../_models/user';
 import { ChatService } from './chat.service';
 import { NotificationService } from './notification.service';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ export class PressenceService {
   private onlineFriendsSource = new BehaviorSubject<number[]>([]);
   onlineFriends$ = this.onlineFriendsSource.asObservable();
 
-  constructor(private chatService: ChatService, private notificationService: NotificationService) { }
+  constructor(private chatService: ChatService, private notificationService: NotificationService,  private usersService: UsersService ) { }
 
   createHubConnection(user: User){
     this.hubConnection = new HubConnectionBuilder()
@@ -53,6 +55,10 @@ export class PressenceService {
         this.markAsRead(message.id) :
           this.notificationService.addUnreadMessage(message) 
           
+      })
+
+      this.hubConnection.on("UnreadMessagesRefreshed", (notification: Notification) => {
+        this.usersService.updateNotification(notification)
       })
   }
 

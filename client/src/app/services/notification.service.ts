@@ -33,14 +33,6 @@ export class NotificationService {
      return tempList;
    }
 
-   markAsReadMessage(messageIDs: number[]){
-     let tempList : UnreadMessage[] = [];
-     this.unreadMessages$.subscribe(unreadMessages => {
-       tempList = unreadMessages.filter(x => !messageIDs.includes(x.messageId))
-     }).unsubscribe();
-     this.unreadMessagesSource.next(tempList);
-   }
-
    addUnreadMessage(message : Message){
      let unreadMessage: UnreadMessage = {
        messageId: message.id,
