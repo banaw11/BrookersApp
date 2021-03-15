@@ -137,6 +137,25 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
+            modelBuilder.Entity("API.Entities.Connection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Connections");
+                });
+
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
                     b.Property<int>("Id")
@@ -299,6 +318,17 @@ namespace API.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Entities.Connection", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "User")
+                        .WithMany("Connections")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "User")
@@ -372,6 +402,8 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
+                    b.Navigation("Connections");
+
                     b.Navigation("Friends");
 
                     b.Navigation("MessagesReceived");

@@ -15,16 +15,14 @@ namespace API.Controllers
     public class UserController : BaseApiController
     {
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-        private readonly IMessageRepository _messageRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(IMapper mapper, IUserRepository userRepository, IMessageRepository messageRepository)
+        public UserController(IMapper mapper, IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _userRepository = userRepository;
-            _messageRepository = messageRepository;
         }
 
-        
+
     }
 }

@@ -15,6 +15,8 @@ namespace API.Data
 
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Connection> Connections { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -48,14 +50,18 @@ namespace API.Data
                 .WithMany(x => x.MessagesSent)
                 .HasForeignKey(x => x.SenderId);
 
-
             builder.Entity<Message>()
                 .HasOne(x => x.Receiver)
                 .WithMany(x => x.MessagesReceived)
                 .HasForeignKey(x => x.ReceiverId);
 
-           
-                
+            builder.Entity<Connection>()
+                .HasKey(x => x.Id);
+
+            builder.Entity<Connection>()
+                 .HasOne(x => x.User)
+                 .WithMany(x => x.Connections)
+                 .HasForeignKey(x => x.UserId);
 
         }
     }

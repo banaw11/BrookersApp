@@ -1,29 +1,38 @@
 <div fxLayout="column" fxLayoutAlign="space-between stretch" style="padding: 1rem; height:100%;">
        
         <nb-card  size="tiny" >
-            <nb-list *ngIf="(friendList$ | async).length > 0">
-                <nb-list-item  *ngFor="let friend of friendList$ | async">
-                    <button nbButton outline  size="small" status="primary" fullWidth [value]='friend?.friendId' (click)='setFriend(friend)'>
-                        <nb-user [picture]="friend?.avatar" [name]='friend?.friendName' size="medium"></nb-user>
+            <nb-list *ngIf="(chatService.friendList$ | async)?.length > 0">
+                <nb-list-item  *ngFor="let friend of chatService.friendList$ | async">
+                    <button nbButton outline  size="medium" [status]='friend?.status' fullWidth>
+                        <nb-actions size="medium" fullWidth>
+                            <nb-action>
+                                <nb-user [picture]="friend?.avatar" [name]='friend?.friendName'></nb-user>
+                            </nb-action>
+                            <nb-action icon="message-circle-outline" 
+                                [badgeDot]="notificationService.isUnreadMessage(friend.friendId)"
+                                badgePosition="top start"
+                                badgeStatus="danger"
+                                (click)='setFriend(friend)'>
+                            </nb-action>
+                            <nb-action icon="person"></nb-action>
+                        </nb-actions>
                     </button>
                 </nb-list-item>
             </nb-list>
-            <nb-alert *ngIf='(friendList$ |async).length < 1' accent="danger" fxLayoutAlign="center">
+            <nb-alert *ngIf='(chatService.friendList$ |async)?.length < 1' accent="danger" fxLayoutAlign="center">
                 No friends were found
             </nb-alert>
         </nb-card>
 
 <nb-chat 
-[title]='(messageThread.chatMember | async)?.friendName != null ?
-(messageThread.chatMember | async)?.friendName : "Choose friend to chat"' 
+[title]='(chatService.messageThread.chatMember | async)?.friendName != null ?
+(chatService.messageThread.chatMember | async)?.friendName : "Choose friend to chat"' 
  size="medium" >
-    <nb-chat-message *ngFor="let msg of (messageThread?.messages |async)"
+    <nb-chat-message *ngFor="let msg of (chatService.messageThread?.messages |async)"
     type="text"
     [message]="msg.content"
-    [reply]="msg.senderId === (messageThread.chatMember | async)?.friendId ? false : true"
-    [avatar]="(messageThread.chatMember | async)?.avatar"
-    [date]="msg.sendDate"
-    [dateFormat]="'HH:MM'"
+    [reply]="msg.senderId === (chatService.messageThread.chatMember | async)?.friendId ? false : true"
+    [avatar]="(chatService.messageThread.chatMember | async)?.avatar"
     >
 
     </nb-chat-message>

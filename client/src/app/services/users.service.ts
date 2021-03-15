@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Message } from '../_models/message';
+import { Notification } from '../_models/notification';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -24,5 +24,13 @@ baseUrl = environment.apiUrl;
     this.currentUserSource.next(null);
   }
 
-  
+  updateNotification(notification: Notification){
+    let temp: User;
+    this.currentUser$.subscribe((user: User) => {
+      temp = user;
+    }).unsubscribe();
+    temp.notification = notification;
+    this.currentUserSource.next(temp);
+  }
+
 }

@@ -6,7 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbSelectModule, NbActionsModule, NbTabsetModule, NbCardModule, NbButtonModule, NbInputModule, NbAlertModule,
- NbIconModule, NbMenuModule, NbContextMenuModule, NbSidebarModule, NbSidebarService, NbUserModule, NbAccordionModule, NbChatModule, NbListModule} from '@nebular/theme';
+ NbIconModule, NbMenuModule, NbContextMenuModule, NbSidebarModule, NbSidebarService, NbUserModule, NbAccordionModule, NbChatModule, NbListModule,
+NbBadgeModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
@@ -65,7 +66,8 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     NbUserModule,
     NbAccordionModule,
     NbChatModule,
-    NbListModule
+    NbListModule,
+    NbBadgeModule
   ],
   providers: [
     NbSidebarService, 

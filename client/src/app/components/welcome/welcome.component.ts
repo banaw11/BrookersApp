@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-welcome',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomeComponent implements OnInit {
 
-  constructor() { }
+  constructor( private accountService: AccountService) { }
 
   ngOnInit(): void {
+    if(this.checkLocalStorage){
+      this.accountService.logout();
+    }
   }
 
+  checkLocalStorage(){
+    return localStorage.getItem('user') ? true: false;
+  }
 }
