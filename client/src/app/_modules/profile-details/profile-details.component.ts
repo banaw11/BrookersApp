@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HomeComponent } from 'src/app/components/home/home.component';
+import { ProfileService } from 'src/app/services/profile.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Friend } from 'src/app/_models/friend';
 import { Profile } from 'src/app/_models/profile';
-import { User } from 'src/app/_models/user';
+import { ChatSidebarComponent } from '../chat-sidebar/chat-sidebar.component';
+
 
 @Component({
   selector: 'app-profile-details',
@@ -12,18 +13,27 @@ import { User } from 'src/app/_models/user';
   styleUrls: ['./profile-details.component.scss']
 })
 export class ProfileDetailsComponent implements OnInit {
-  private profileSource = new BehaviorSubject<Profile>(null);
-  profile = this.profileSource.asObservable();
-  constructor(private usersService: UsersService, private route : ActivatedRoute) { 
-    console.log("ref");
+  @ViewChild(HomeComponent) Home : HomeComponent;
+  @ViewChild(ChatSidebarComponent) Chat : ChatSidebarComponent;
+  constructor(public profileService: ProfileService) { 
+    
   }
 
   ngOnInit(): void {
-    this.usersService.getProfile(this.route.snapshot.paramMap.get('userName'))
-      .pipe(take(1)).subscribe((profile : Profile) => {
-        this.profileSource.next(profile);
-    })
     
+  }
+
+  openChat(){
+    console.log("cos")
+    let friend: Friend;
+    this.profileService.profile$.subscribe(profile => {
+      friend = {
+        friendId: profile.userId,
+        friendName: profile.userName,
+        avatar: profile.image}
+    }).unsubscribe();
+    this.Home.chatSbState.next("expanded");
+    this.Chat.setFriend(friend);
   }
 
 }

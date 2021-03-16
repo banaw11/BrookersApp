@@ -1,29 +1,29 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
-    <img [src]='(profile| async)?.image '>
-    <ng-container *ngIf="!(profile| async)?.isOwner && (profile| async)?.isFriend">
+    <img [src]='(profileService.profile$| async)?.image '>
+    <ng-container *ngIf="!(profileService.profile$| async)?.isOwner && (profileService.profile$| async)?.isFriend">
         <nb-actions size="medium">
             <nb-action>
-                <h5>{{(profile| async)?.userName}}</h5>
+                <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
             <nb-action icon="person-delete-outline">
             </nb-action>
-            <nb-action icon="message-circle-outline">
+            <nb-action icon="message-circle-outline" (click)="openChat()">
             </nb-action>
         </nb-actions>
     </ng-container>
-    <ng-container *ngIf="!(profile| async)?.isOwner && !(profile| async)?.isFriend">
+    <ng-container *ngIf="!(profileService.profile$| async)?.isOwner && !(profileService.profile$| async)?.isFriend">
         <nb-actions size="medium">
             <nb-action>
-                <h5>{{(profile| async)?.userName}}</h5>
+                <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
             <nb-action icon="person-add-outline">
             </nb-action>
         </nb-actions>
     </ng-container>
-    <ng-container *ngIf="(profile| async)?.isOwner">
+    <ng-container *ngIf="(profileService.profile$| async)?.isOwner">
         <nb-actions>
             <nb-action>
-                <h5>{{(profile| async)?.userName}}</h5>
+                <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
             <nb-action icon="settings-2-outline">
             </nb-action>

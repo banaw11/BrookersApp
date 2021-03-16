@@ -1,10 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { profile } from 'console';
-import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { UsersService } from 'src/app/services/users.service';
-import { Profile } from 'src/app/_models/profile';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HomeComponent } from '../home/home.component';
+
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +8,8 @@ import { Profile } from 'src/app/_models/profile';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  constructor(){
+  }
 
   ngOnInit(): void {
   }

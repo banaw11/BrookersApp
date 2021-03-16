@@ -26,7 +26,7 @@ const routes: Routes = [
           {path: 'community', component: CommunityComponent},
           {path: 'investments', component: InvestmentsComponent},
           {path: 'settings', component: SettingsComponent},
-          {path: 'profile/:userName', component: ProfileComponent},
+          {path: 'profile', component: ProfileComponent},
         ]}
     ]
   },

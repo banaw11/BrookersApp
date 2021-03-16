@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@nebular/theme';
 import { BehaviorSubject, Observable, observable } from 'rxjs';
 import { filter, flatMap, map, take } from 'rxjs/operators';
+import { ProfileService } from 'src/app/services/profile.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -51,7 +52,8 @@ menuItems: NbMenuItem[] = [
 ]
 
   constructor( public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router
-    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService, private chatService: ChatService) {
+    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService, private chatService: ChatService,
+     private profileService: ProfileService) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
     });
@@ -82,7 +84,8 @@ menuItems: NbMenuItem[] = [
         this.router.navigateByUrl('');
       }
       else{
-        this.router.navigate(['/home/profile',this.user.userName]);
+        this.router.navigateByUrl('/home/profile');
+        this.profileService.getProfile(this.user.userName);
       }
     })
   }

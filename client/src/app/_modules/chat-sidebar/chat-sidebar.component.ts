@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProfileService } from 'src/app/services/profile.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { PressenceService } from 'src/app/services/pressence.service';
+import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
 import { UnreadMessage } from 'src/app/_models/unreadMessage';
 
@@ -13,7 +15,8 @@ import { UnreadMessage } from 'src/app/_models/unreadMessage';
 })
 export class ChatSidebarComponent implements OnInit{
   dataLoadded : Promise<boolean>
-  constructor(public chatService: ChatService, private pressenceService: PressenceService, private notificationService: NotificationService, private router: Router) { 
+  constructor(public chatService: ChatService, private pressenceService: PressenceService, private notificationService: NotificationService,
+     private router: Router, private profileService: ProfileService) { 
     this.pressenceService.onlineFriends$.subscribe(pList => {
       this.chatService.pressenceList = pList;
     }).unsubscribe()
@@ -48,7 +51,8 @@ markAsRead(){
 }
 
 goToProfile(friendName: string){
-  this.router.navigate(['/home/profile', friendName]);
+  this.router.navigateByUrl('/home/profile')
+  this.profileService.getProfile(friendName);
 }
 
 
