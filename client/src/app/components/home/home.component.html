@@ -16,18 +16,8 @@
         <nb-menu [items]="menuItems"></nb-menu>
     </nb-sidebar>
     
-    <nb-layout-column fxLayout="row">
-        <router-outlet fxFlex="97"></router-outlet>
-        <div fxLayout="column" fxLayoutAlign="end start" fxFlex="3">
-            <nb-actions size="medium">
-                <nb-action icon="message-circle-outline" 
-                    [badgeDot]="(notificationService.unreadMessages$ | async)?.length > 0"
-                    badgePosition="top left"
-                    badgeStatus="danger"
-                    (click)="toggleChat('chat-sidebar')">
-                </nb-action>
-            </nb-actions>
-        </div>
+    <nb-layout-column fxFlex="80" fxFlexOffset="10" >
+                <router-outlet ></router-outlet>
     </nb-layout-column>
         <nb-sidebar class="chat-sidebar" responsive right [state]='chatSbState.value' class="menu-sidebar" tag="chat-sidebar">
             <nb-sidebar-header fxLayoutAlign="end">
@@ -38,4 +28,14 @@
             </nb-sidebar-header>
             <app-chat-sidebar ></app-chat-sidebar>
         </nb-sidebar>
+        <nb-layout-footer fixed fxLayout="row" fxLayoutAlign="end end">
+            <nb-actions size="medium">
+                <nb-action icon="message-circle-outline" 
+                    [badgeDot]="(notificationService.unreadMessages$ | async)?.length > 0"
+                    badgePosition="top left"
+                    badgeStatus="danger"
+                    (click)="toggleChat('chat-sidebar')">
+                </nb-action>
+            </nb-actions>
+        </nb-layout-footer>
 </nb-layout>

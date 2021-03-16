@@ -14,7 +14,6 @@ export class UsersService {
 baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
-  
   constructor(private http: HttpClient) { }
 
   setCurentUser(user: User){
@@ -35,7 +34,7 @@ baseUrl = environment.apiUrl;
   }
 
   getProfile(userName: string){
-    return this.http.get<Profile>(this.baseUrl+ 'users/' + userName);
+    return this.http.get<Profile>(this.baseUrl+ 'user/' + userName);
   }
 
 }

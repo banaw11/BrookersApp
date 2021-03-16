@@ -1,14 +1,33 @@
-<div>
-    <img [src]='profile?.image' class="rounded-circle">
-    <nb-actions size="large">
-        <nb-action>
-            <h5>{{profile?.userName}}</h5>
-        </nb-action>
-        <nb-action icon="person-delete-outline">
-            
-        </nb-action>
-        <nb-action icon="message-circle-outline">
-            
-        </nb-action>
-    </nb-actions>
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
+    <img [src]='(profile| async)?.image '>
+    <ng-container *ngIf="!(profile| async)?.isOwner && (profile| async)?.isFriend">
+        <nb-actions size="medium">
+            <nb-action>
+                <h5>{{(profile| async)?.userName}}</h5>
+            </nb-action>
+            <nb-action icon="person-delete-outline">
+            </nb-action>
+            <nb-action icon="message-circle-outline">
+            </nb-action>
+        </nb-actions>
+    </ng-container>
+    <ng-container *ngIf="!(profile| async)?.isOwner && !(profile| async)?.isFriend">
+        <nb-actions size="medium">
+            <nb-action>
+                <h5>{{(profile| async)?.userName}}</h5>
+            </nb-action>
+            <nb-action icon="person-add-outline">
+            </nb-action>
+        </nb-actions>
+    </ng-container>
+    <ng-container *ngIf="(profile| async)?.isOwner">
+        <nb-actions>
+            <nb-action>
+                <h5>{{(profile| async)?.userName}}</h5>
+            </nb-action>
+            <nb-action icon="settings-2-outline">
+            </nb-action>
+        </nb-actions>
+    </ng-container>
+    
 </div>

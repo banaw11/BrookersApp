@@ -14,7 +14,7 @@
                                 badgeStatus="danger"
                                 (click)='setFriend(friend)'>
                             </nb-action>
-                            <nb-action icon="person"></nb-action>
+                            <nb-action icon="person" (click)="goToProfile(friend?.friendName)"></nb-action>
                         </nb-actions>
                     </button>
                 </nb-list-item>

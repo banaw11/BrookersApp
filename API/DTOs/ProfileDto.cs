@@ -11,5 +11,6 @@ namespace API.DTOs
         public int UserId { get; set; }
         public string Image { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsFriend { get; set; }
     }
 }

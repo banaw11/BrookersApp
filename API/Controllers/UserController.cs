@@ -28,7 +28,7 @@ namespace API.Controllers
         {
             var currentUser = User.GetUserName();
 
-            return await _unitOfWork.UserRepository.GetUserProfile(userName, isOwner: currentUser.ToLower() == userName.ToLower());
+            return await _unitOfWork.UserRepository.GetUserProfile(userName, isOwner: currentUser.ToLower() == userName.ToLower(), User.GetUserId());
         }
     }
 }

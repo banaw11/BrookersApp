@@ -46,12 +46,20 @@ namespace API.Repositories
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task<ProfileDto> GetUserProfile(string userName, bool isOwner)
+        public async Task<ProfileDto> GetUserProfile(string userName, bool isOwner, int callerId)
         {
-            return await _context.Users
+            var profile = await _context.Users
                  .Where(x => x.NormalizedUserName == userName.ToUpper())
-                 .Select(x => new ProfileDto { UserName = x.UserName, UserId = x.Id, Image = x.Avatar, IsOwner = isOwner })
+                 .Select(x => new ProfileDto { UserName = x.UserName, UserId = x.Id, Image = x.Avatar})
                  .FirstOrDefaultAsync();
+
+            if(!isOwner){
+                var friends = await _context.Users.Where(x => x.Id == callerId).Select(x => x.Friends).SingleOrDefaultAsync();
+                profile.IsFriend = friends.Any(x => x.FriendId == profile.UserId);
+            }
+            else profile.IsFriend = false;
+            
+            return profile;
         }
     }
 }
