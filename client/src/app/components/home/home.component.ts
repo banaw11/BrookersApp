@@ -1,16 +1,15 @@
-import { LocationStrategy, PlatformLocation } from '@angular/common';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { LocationStrategy } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NbMenuItem, NbMenuService, NbSidebarService, NbSidebarState } from '@nebular/theme';
-import { BehaviorSubject, Observable, observable } from 'rxjs';
-import { filter, flatMap, map, take } from 'rxjs/operators';
+import { NbMenuItem, NbMenuService, NbSidebarState } from '@nebular/theme';
+import { BehaviorSubject} from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 import { ProfileService } from 'src/app/services/profile.service';
 import { AccountService } from 'src/app/services/account.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { PressenceService } from 'src/app/services/pressence.service';
 import { UsersService } from 'src/app/services/users.service';
-import { Friend } from 'src/app/_models/friend';
 import { User } from 'src/app/_models/user';
 import { ChatSidebarComponent } from 'src/app/_modules/chat-sidebar/chat-sidebar.component';
 
@@ -22,7 +21,6 @@ import { ChatSidebarComponent } from 'src/app/_modules/chat-sidebar/chat-sidebar
 export class HomeComponent implements OnInit  {
   @ViewChild(ChatSidebarComponent) sidebarChat: ChatSidebarComponent;
    menuSbState = new BehaviorSubject<NbSidebarState>('compacted');
-   chatSbState = new BehaviorSubject<NbSidebarState>('collapsed');
 user: User;
 searchString = new BehaviorSubject<string>(null);
 userMenu = [{title: 'Logout'}, {title: 'Profile'}];
@@ -52,7 +50,7 @@ menuItems: NbMenuItem[] = [
 ]
 
   constructor( public usersService: UsersService, private menuService: NbMenuService, private accountservice: AccountService, private router: Router
-    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService, private chatService: ChatService,
+    , private pressenceService: PressenceService, private location: LocationStrategy, public notificationService: NotificationService, public chatService: ChatService,
      private profileService: ProfileService) {
     this.usersService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
@@ -67,11 +65,8 @@ menuItems: NbMenuItem[] = [
     this.getUserFromLocalStorage();
   }
 
-  toggleChat(tag: string){
-    tag === 'menu-sidebar' ?
-    this.menuSbState.value === 'compacted' ? this.menuSbState.next('collapsed') : this.menuSbState.next('compacted'):
-    this.chatSbState.value === 'collapsed' ? this.chatSbState.next('expanded') : this.chatSbState.next('collapsed');
-    this.chatService.cleanMessageThread();
+  toggleMenu(){
+    this.menuSbState.value === 'compacted' ? this.menuSbState.next('collapsed') : this.menuSbState.next('compacted');
   }
 
   onMenuClick(){

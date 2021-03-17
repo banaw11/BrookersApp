@@ -1,10 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HomeComponent } from 'src/app/components/home/home.component';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChatService } from 'src/app/services/chat.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { UsersService } from 'src/app/services/users.service';
 import { Friend } from 'src/app/_models/friend';
-import { Profile } from 'src/app/_models/profile';
-import { ChatSidebarComponent } from '../chat-sidebar/chat-sidebar.component';
 
 
 @Component({
@@ -13,18 +10,18 @@ import { ChatSidebarComponent } from '../chat-sidebar/chat-sidebar.component';
   styleUrls: ['./profile-details.component.scss']
 })
 export class ProfileDetailsComponent implements OnInit {
-  @ViewChild(HomeComponent) Home : HomeComponent;
-  @ViewChild(ChatSidebarComponent) Chat : ChatSidebarComponent;
-  constructor(public profileService: ProfileService) { 
+  @HostListener('window:beforeunload') refresh (){
+    this.profileService.rememberProfile();
+  }
+  constructor(public profileService: ProfileService, private chatService: ChatService) { 
     
+  }
+  ngOnInit(): void {
+    this.checkLocalStorage();
   }
 
-  ngOnInit(): void {
-    
-  }
 
   openChat(){
-    console.log("cos")
     let friend: Friend;
     this.profileService.profile$.subscribe(profile => {
       friend = {
@@ -32,8 +29,14 @@ export class ProfileDetailsComponent implements OnInit {
         friendName: profile.userName,
         avatar: profile.image}
     }).unsubscribe();
-    this.Home.chatSbState.next("expanded");
-    this.Chat.setFriend(friend);
+    this.chatService.chatSbState.next("expanded");
+    this.chatService.setFriend(friend);
   }
 
+  checkLocalStorage(){
+    let profile = localStorage.getItem('profile');
+    if(profile){
+      this.profileService.recoveryProfile();
+    }
+  }
 }

@@ -12,7 +12,7 @@
                                 [badgeDot]="notificationService.isUnreadMessage(friend.friendId)"
                                 badgePosition="top start"
                                 badgeStatus="danger"
-                                (click)='setFriend(friend)'>
+                                (click)='chatService.setFriend(friend)'>
                             </nb-action>
                             <nb-action icon="person" (click)="goToProfile(friend?.friendName)"></nb-action>
                         </nb-actions>

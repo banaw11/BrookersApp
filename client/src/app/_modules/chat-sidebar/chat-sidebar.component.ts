@@ -19,7 +19,10 @@ export class ChatSidebarComponent implements OnInit{
      private router: Router, private profileService: ProfileService) { 
     this.pressenceService.onlineFriends$.subscribe(pList => {
       this.chatService.pressenceList = pList;
-    }).unsubscribe()
+    }).unsubscribe();
+    this.chatService.chatMember$.subscribe(friend =>{
+      friend ? this.markAsRead() : null;
+    })
   }
   ngOnInit(): void {
     this.chatService.getFriends();

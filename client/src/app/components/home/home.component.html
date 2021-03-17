@@ -2,7 +2,7 @@
     <nb-layout-header fixed > 
         <div fxLayout="row" fxLayoutAlign="space-between center" fxFill="100">
             <nb-actions >
-                <nb-action icon="menu-2-outline" (click)="toggleChat('menu-sidebar')"></nb-action>
+                <nb-action icon="menu-2-outline" (click)="toggleMenu()"></nb-action>
                 <nb-action>BrookersApp</nb-action>
             </nb-actions>
             <nb-actions>
@@ -19,7 +19,7 @@
     <nb-layout-column fxFlex="80" fxFlexOffset="10" >
                 <router-outlet ></router-outlet>
     </nb-layout-column>
-        <nb-sidebar class="chat-sidebar" responsive right [state]='chatSbState.value' class="menu-sidebar" tag="chat-sidebar">
+        <nb-sidebar class="chat-sidebar" responsive right [state]='chatService.chatSbState.value' class="menu-sidebar" tag="chat-sidebar">
             <nb-sidebar-header fxLayoutAlign="end">
                 <nb-actions>
                     <nb-action icon="search"></nb-action>
@@ -34,7 +34,7 @@
                     [badgeDot]="(notificationService.unreadMessages$ | async)?.length > 0"
                     badgePosition="top left"
                     badgeStatus="danger"
-                    (click)="toggleChat('chat-sidebar')">
+                    (click)="chatService.toggleChat()">
                 </nb-action>
             </nb-actions>
         </nb-layout-footer>

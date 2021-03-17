@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NbSidebarState } from '@nebular/theme';
 import { BehaviorSubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -26,6 +27,7 @@ messageThread: MessageThread = {
   messages: this.messages$
 }
   pressenceList: number[];
+  chatSbState = new BehaviorSubject<NbSidebarState>('collapsed');
   constructor(private http: HttpClient, private usersService: UsersService) { }
 
   getFriends(){
@@ -114,5 +116,9 @@ messageThread: MessageThread = {
     this.messagesSource.value ? this.messagesSource.next(null) : null ;
   }
 
+  toggleChat(){
+    this.chatSbState.value === 'collapsed' ? this.chatSbState.next('expanded') : this.chatSbState.next('collapsed');
+    this.cleanMessageThread();
+  }
 
 }
