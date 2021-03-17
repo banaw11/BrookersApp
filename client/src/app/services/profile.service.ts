@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { profile } from 'node:console';
+
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -21,7 +21,6 @@ export class ProfileService {
     this.http.get<Profile>(this.baseUrl + 'user/' + userName).pipe(take(1))
       .subscribe((profile: Profile) => {
         this.profileSource.next(profile);
-        
     })
  }
 

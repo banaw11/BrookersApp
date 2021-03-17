@@ -11,6 +11,6 @@ namespace API.Interfaces
         Task<Connection> GetConnection(string connectionId);
         void DeleteConnection (string connectionId);
         Task<ICollection<int>> GetOnlineFriends(int userId);
-        Task<ICollection<string>> GetFriendConnectionIDs (int userId);
+        Task<ICollection<string>> GetFriendConnectionIDs(int userId);
     }
 }

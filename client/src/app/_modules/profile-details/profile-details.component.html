@@ -11,7 +11,7 @@
             </nb-action>
         </nb-actions>
     </ng-container>
-    <ng-container *ngIf="!(profileService.profile$| async)?.isOwner && !(profileService.profile$| async)?.isFriend">
+    <ng-container *ngIf="!(profileService.profile$| async)?.isOwner && !(profileService.profile$| async)?.isFriend" >
         <nb-actions size="medium">
             <nb-action>
                 <h5>{{(profileService.profile$| async)?.userName}}</h5>
@@ -20,7 +20,7 @@
             </nb-action>
         </nb-actions>
     </ng-container>
-    <ng-container *ngIf="(profileService.profile$| async)?.isOwner">
+    <ng-container *ngIf="(profileService.profile$| async)?.isOwner && !(profileService.profile$| async)?.isFriend">
         <nb-actions>
             <nb-action>
                 <h5>{{(profileService.profile$| async)?.userName}}</h5>

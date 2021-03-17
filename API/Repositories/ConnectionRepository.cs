@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,20 +44,21 @@ namespace API.Repositories
 
         public async Task<ICollection<string>> GetFriendConnectionIDs(int userId)
         {
-            return await _context.Connections
-                .Where(x => x.User.Friends.Select(x => x.FriendId).Contains(userId))
-                .Select(x => x.ConnectionId)
-                .ToListAsync();
+            //return await _context.Connections
+            //    .Where(x => x.User.Friends.Select(x => x.FriendId).Contains(userId))
+            //    .Select(x => x.ConnectionId)
+            //    .ToListAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<ICollection<int>> GetOnlineFriends(int userId)
         {
-            return await _context.Connections
-                .Where(x => x.User.Friends.Select(x => x.FriendId).Contains(userId))
-                .Select(x => x.UserId)
-                .Distinct()
-                .ToListAsync();
-
+            //return await _context.Connections
+            //    .Where(x => x.User.Friends.Select(x => x.FriendId).Contains(userId))
+            //    .Select(x => x.UserId)
+            //    .Distinct()
+            //    .ToListAsync();
+            throw new NotImplementedException();
         }
     }
 }

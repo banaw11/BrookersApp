@@ -28,11 +28,6 @@ namespace API.Data
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
 
-            builder.Entity<AppUser>()
-                .HasMany(f => f.Friends)
-                .WithOne(u => u.User)
-                .HasForeignKey(ui => ui.UserId);
-
             builder.Entity<AppRole>()
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.Role)
@@ -40,7 +35,18 @@ namespace API.Data
                 .IsRequired();
 
             builder.Entity<Friend>()
-                .HasKey(f => f.Id);
+                .HasKey(f => new {f.UserId, f.FriendId });
+
+
+            builder.Entity<Friend>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.FriendsAccepted)
+                .HasForeignKey(x => x.UserId);
+
+            builder.Entity<Friend>()
+                .HasOne(x => x.FriendUser)
+                .WithMany(x => x.FriendsInvited)
+                .HasForeignKey(x => x.FriendId);
 
             builder.Entity<Message>()
                .HasKey(k => k.Id);
@@ -56,7 +62,7 @@ namespace API.Data
                 .HasForeignKey(x => x.ReceiverId);
 
             builder.Entity<Connection>()
-                .HasKey(x => x.Id);
+                .HasKey(x => x.ConnectionId);
 
             builder.Entity<Connection>()
                  .HasOne(x => x.User)

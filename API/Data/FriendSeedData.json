@@ -1,0 +1,47 @@
+﻿[
+  {
+    "UserId": 7,
+    "FriendId": 1,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 2,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 3,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 4,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 5,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 6,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 8,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 9,
+    "IsConfirmed": true
+  },
+  {
+    "UserId": 7,
+    "FriendId": 10,
+    "IsConfirmed": true
+  }
+]

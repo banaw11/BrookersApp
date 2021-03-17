@@ -139,17 +139,13 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Connection", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ConnectionId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("ConnectionId");
 
                     b.HasIndex("UserId");
 
@@ -158,25 +154,18 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("FriendId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FriendName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
+                    b.Property<bool>("IsConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "FriendId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FriendId");
 
                     b.ToTable("Friends");
                 });
@@ -331,11 +320,19 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
+                    b.HasOne("API.Entities.AppUser", "FriendUser")
+                        .WithMany("FriendsInvited")
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Entities.AppUser", "User")
-                        .WithMany("Friends")
+                        .WithMany("FriendsAccepted")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FriendUser");
 
                     b.Navigation("User");
                 });
@@ -404,7 +401,9 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("Connections");
 
-                    b.Navigation("Friends");
+                    b.Navigation("FriendsAccepted");
+
+                    b.Navigation("FriendsInvited");
 
                     b.Navigation("MessagesReceived");
 

@@ -25,7 +25,8 @@ namespace API.Repositories
 
         public async Task<ICollection<FriendDto>> GetFriends(int userId)
         {
-            var result = await _context.Users.Where(x => x.Id == userId).Select(x => x.Friends).FirstOrDefaultAsync();
+            var result = await _context.Users.Where(x => x.Id == userId).Select(x => new {x.FriendsAccepted, x.FriendsInvited }).FirstOrDefaultAsync();
+            var friendIds = result.FriendsAccepted.Select(x => x.FriendId).ToList().Concat(result.FriendsInvited.Select(x => x.UserId)).ToList();
             return _mapper.Map<ICollection<FriendDto>>(result);
         }
 
@@ -50,12 +51,12 @@ namespace API.Repositories
         {
             var profile = await _context.Users
                  .Where(x => x.NormalizedUserName == userName.ToUpper())
-                 .Select(x => new ProfileDto { UserName = x.UserName, UserId = x.Id, Image = x.Avatar})
+                 .Select(x => new ProfileDto { UserName = x.UserName, UserId = x.Id, Image = x.Avatar, IsOwner= isOwner})
                  .FirstOrDefaultAsync();
 
             if(!isOwner){
-                var friends = await _context.Users.Where(x => x.Id == callerId).Select(x => x.Friends).SingleOrDefaultAsync();
-                profile.IsFriend = friends.Any(x => x.FriendId == profile.UserId);
+                //var friends = await _context.Users.Where(x => x.Id == callerId).Select(x => x.Friends).SingleOrDefaultAsync();
+                //profile.IsFriend = friends.Any(x => x.FriendId == profile.UserId);
             }
             else profile.IsFriend = false;
             

@@ -33,6 +33,7 @@ export class UsersService {
     }).unsubscribe();
     temp.notification = notification;
     this.currentUserSource.next(temp);
+    localStorage.setItem('user', JSON.stringify(temp));
   }
 
   
