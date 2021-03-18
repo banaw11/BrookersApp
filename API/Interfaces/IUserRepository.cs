@@ -11,6 +11,7 @@ namespace API.Interfaces
     {
         Task<AppUser> GetUserByIdAsync(int userId);
         Task<ICollection<FriendDto>> GetFriends(int userId);
+        Task<ICollection<int>> GetFriendIds (int userId);
         Task<ICollection<MessageDto>> GetMessagesThread(int userId, int memberId);
         Task<ProfileDto> GetUserProfile(string userName, bool isOwner, int callerId);
     }

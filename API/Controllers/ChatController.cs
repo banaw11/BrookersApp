@@ -62,5 +62,6 @@ namespace API.Controllers
             var messages = await _unitOfWork.UserRepository.GetMessagesThread(User.GetUserId(), memberId);
             return Ok(messages);
         }
+
     }
 }

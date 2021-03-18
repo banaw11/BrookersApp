@@ -23,11 +23,24 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
+        public async Task<ICollection<int>> GetFriendIds(int userId)
+        {
+             var result = await _context.Users
+                .Where(x => x.Id == userId)
+                .Select(x => new {x.FriendsAccepted, x.FriendsInvited })
+                .FirstOrDefaultAsync();
+            return  result.FriendsAccepted
+                .Select(x => x.FriendId).ToList()
+                .Concat(result.FriendsInvited.Select(x => x.UserId)).ToList();
+        }
+
         public async Task<ICollection<FriendDto>> GetFriends(int userId)
         {
-            var result = await _context.Users.Where(x => x.Id == userId).Select(x => new {x.FriendsAccepted, x.FriendsInvited }).FirstOrDefaultAsync();
-            var friendIds = result.FriendsAccepted.Select(x => x.FriendId).ToList().Concat(result.FriendsInvited.Select(x => x.UserId)).ToList();
-            return _mapper.Map<ICollection<FriendDto>>(result);
+            var friendIds = await GetFriendIds(userId);
+            return await _context.Users
+                .Where(x =>  friendIds.Contains(x.Id))
+                .Select(x => new FriendDto {FriendId = x.Id, FriendName = x.UserName, Avatar = x.Avatar})
+                .ToListAsync();
         }
 
         public async Task<ICollection<MessageDto>> GetMessagesThread(int userId, int memberId)
@@ -55,8 +68,8 @@ namespace API.Repositories
                  .FirstOrDefaultAsync();
 
             if(!isOwner){
-                //var friends = await _context.Users.Where(x => x.Id == callerId).Select(x => x.Friends).SingleOrDefaultAsync();
-                //profile.IsFriend = friends.Any(x => x.FriendId == profile.UserId);
+                var friends = await GetFriendIds(callerId);
+                profile.IsFriend = friends.Any(x => x == profile.UserId);
             }
             else profile.IsFriend = false;
             
