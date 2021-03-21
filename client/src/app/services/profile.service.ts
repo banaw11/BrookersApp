@@ -33,4 +33,20 @@ export class ProfileService {
    localStorage.removeItem('profile');
  }
 
+ addFriend(){
+   let friendId: number
+   this.profile$.subscribe(p => {
+     friendId = p.userId;
+   }).unsubscribe();
+    this.http.post(this.baseUrl+'user/send-invite/'+friendId, {});
+ }
+
+ deleteFriend(){
+  let friendId: number
+  this.profile$.subscribe(p => {
+    friendId = p.userId;
+  }).unsubscribe();
+  this.http.post(this.baseUrl+'user/delete-friend/'+friendId, {});
+ }
+
 }

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Friend } from '../_models/friend';
 import { Notification } from '../_models/notification';
 import { Profile } from '../_models/profile';
 import { User } from '../_models/user';
@@ -34,6 +35,16 @@ export class UsersService {
     temp.notification = notification;
     this.currentUserSource.next(temp);
     localStorage.setItem('user', JSON.stringify(temp));
+  }
+
+  updateFriendsList(friendsList: Friend[]){
+    let temp: User;
+    this.currentUser$.subscribe((user: User) => {
+      temp = user;
+    }).unsubscribe();
+    temp.friends = friendsList;
+    this.currentUserSource.next(temp);
+    localStorage.setItem('user',JSON.stringify(temp));
   }
 
   

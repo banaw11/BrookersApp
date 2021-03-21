@@ -14,5 +14,10 @@ namespace API.Interfaces
         Task<ICollection<int>> GetFriendIds (int userId);
         Task<ICollection<MessageDto>> GetMessagesThread(int userId, int memberId);
         Task<ProfileDto> GetUserProfile(string userName, bool isOwner, int callerId);
+        void AddFriend(int userId, int friendId);
+        Task<bool> IsFriend(int contextUserId, int userId);
+        void AcceptInvite(int contextUserId, int userId);
+        void DeclineInvite(int contextUserId, int userId);
+        void DeleteFirend(int userId, int friendId);
     }
 }

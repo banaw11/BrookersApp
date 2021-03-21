@@ -5,7 +5,7 @@
             <nb-action>
                 <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
-            <nb-action icon="person-delete-outline">
+            <nb-action icon="person-delete-outline" (click)="deleteFriend()">
             </nb-action>
             <nb-action icon="message-circle-outline" (click)="openChat()">
             </nb-action>
@@ -16,7 +16,7 @@
             <nb-action>
                 <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
-            <nb-action icon="person-add-outline">
+            <nb-action icon="person-add-outline" (click)="addFriend()">
             </nb-action>
         </nb-actions>
     </ng-container>

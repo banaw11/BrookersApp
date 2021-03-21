@@ -4,5 +4,6 @@ namespace API.SignalR._interfaces
     {
         IMessageService MessageService {get;}
         INotificationsService NotificationsService {get;}
+        IInviteService InviteService { get; }
     }
 }

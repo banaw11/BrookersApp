@@ -3,6 +3,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Friend } from '../_models/friend';
 import { Message } from '../_models/message';
 import { Notification } from '../_models/notification';
 import { User } from '../_models/user';
@@ -62,6 +63,32 @@ export class PressenceService {
 
       this.hubConnection.on("UnreadMessagesRefreshed", (notification: Notification) => {
         this.usersService.updateNotification(notification)
+      })
+
+      this.hubConnection.on("GetInvite", (invite: Friend) => {
+        let tempNotification: Notification;
+        this.usersService.currentUser$.subscribe((user: User) => {
+          tempNotification = user.notification;
+        }).unsubscribe();
+        tempNotification.invitations.push(invite);
+        this.usersService.updateNotification(tempNotification);
+      })
+
+      this.hubConnection.on("InviteAccepted", (invite: Friend) => {
+        console.log("invite");
+      })
+
+      this.hubConnection.on("RefreshedFriendsList", (friendList: Friend[]) => {
+        this.usersService.updateFriendsList(friendList);
+      })
+
+      this.hubConnection.on("InvitationsRefreshed", (invitationsList: Friend[]) => {
+        let tempNotification: Notification;
+        this.usersService.currentUser$.subscribe((user: User) => {
+          tempNotification = user.notification;
+        }).unsubscribe();
+        tempNotification.invitations = invitationsList;
+        this.usersService.updateNotification(tempNotification);
       })
   }
 

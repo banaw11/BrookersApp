@@ -8,5 +8,6 @@ namespace API.DTOs
     public class NotificationDto
     {
         public ICollection<UnreadMessageDto> UnreadMessages { get; set; }
+        public ICollection<FriendDto> Invitations { get; set; }
     }
 }

@@ -45,8 +45,8 @@ namespace API.Repositories
         public async Task<ICollection<string>> GetFriendConnectionIDs(int userId)
         {
             return await _context.Connections
-               .Where(x => x.User.FriendsInvited.Select(x => x.UserId).Contains(userId) 
-                    || x.User.FriendsAccepted.Select(x => x.FriendId).Contains(userId))
+               .Where(x => x.User.FriendsInvited.Where(x => x.IsConfirmed == true).Select(x => x.UserId).Contains(userId) 
+                    || x.User.FriendsAccepted.Where(x => x.IsConfirmed == true).Select(x => x.FriendId).Contains(userId))
                .Select(x => x.ConnectionId)
                .ToListAsync();
         }
@@ -54,8 +54,8 @@ namespace API.Repositories
         public async Task<ICollection<int>> GetOnlineFriends(int userId)
         {
             return await _context.Connections
-               .Where(x => x.User.FriendsInvited.Select(x => x.UserId).Contains(userId) 
-                    || x.User.FriendsAccepted.Select(x => x.FriendId).Contains(userId))
+               .Where(x => x.User.FriendsInvited.Where(x => x.IsConfirmed == true).Select(x => x.UserId).Contains(userId) 
+                    || x.User.FriendsAccepted.Where(x => x.IsConfirmed == true).Select(x => x.FriendId).Contains(userId))
                .Select(x => x.UserId)
                .Distinct()
                .ToListAsync();

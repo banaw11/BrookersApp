@@ -19,6 +19,7 @@ namespace API.SignalR._repositories
         }
 
         public IMessageService MessageService => new MessageService(_hubContext, _unitOfWork, _mapper);
-        public INotificationsService NotificationsService => new NotificationsService(_hubContext);
+        public INotificationsService NotificationsService => new NotificationsService(_hubContext, _unitOfWork);
+        public IInviteService InviteService => new InviteService(_hubContext, _unitOfWork);
     }
 }

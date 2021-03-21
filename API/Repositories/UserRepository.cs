@@ -23,6 +23,33 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
+        public async void AcceptInvite(int contextUserId, int userId)
+        {
+            var relation = await _context.Friends.FindAsync(new { contextUserId, userId });
+            relation.IsConfirmed = true;
+            _context.Entry(relation).State = EntityState.Modified;
+        }
+
+        public  void AddFriend(int userId, int friendId)
+        {
+            _context.Friends.Add(new Friend { FriendId = friendId, UserId = userId, IsConfirmed = false });
+        }
+
+        public async void DeclineInvite(int contextUserId, int userId)
+        {
+            var relation = await _context.Friends.FindAsync(new { contextUserId, userId });
+            _context.Friends.Remove(relation);
+        }
+
+        public async void DeleteFirend(int userId, int friendId)
+        {
+            var friend = await _context.Friends.FindAsync( userId, friendId );
+            if(friend == null)
+                friend = await _context.Friends.FindAsync(friendId, userId );
+
+            _context.Friends.Remove(friend);
+        }
+
         public async Task<ICollection<int>> GetFriendIds(int userId)
         {
              var result = await _context.Users
@@ -30,8 +57,9 @@ namespace API.Repositories
                 .Select(x => new {x.FriendsAccepted, x.FriendsInvited })
                 .FirstOrDefaultAsync();
             return  result.FriendsAccepted
+                .Where(x => x.IsConfirmed == true)
                 .Select(x => x.FriendId).ToList()
-                .Concat(result.FriendsInvited.Select(x => x.UserId)).ToList();
+                .Concat(result.FriendsInvited.Where(x => x.IsConfirmed == true).Select(x => x.UserId)).ToList();
         }
 
         public async Task<ICollection<FriendDto>> GetFriends(int userId)
@@ -74,6 +102,16 @@ namespace API.Repositories
             else profile.IsFriend = false;
             
             return profile;
+        }
+
+        public async Task<bool> IsFriend(int contextUserId, int userId)
+        {
+            var friendIds = await GetFriendIds(contextUserId);
+
+            if (friendIds.Contains(userId))
+                return true;
+
+            return false;
         }
     }
 }

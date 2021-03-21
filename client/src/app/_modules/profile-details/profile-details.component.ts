@@ -39,4 +39,13 @@ export class ProfileDetailsComponent implements OnInit {
       this.profileService.recoveryProfile();
     }
   }
+
+  deleteFriend(){
+    console.log("chuj");
+    this.profileService.deleteFriend();
+  }
+
+  addFriend(){
+    this.profileService.addFriend();
+  }
 }
