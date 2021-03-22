@@ -80,6 +80,7 @@ export class PressenceService {
 
       this.hubConnection.on("RefreshedFriendsList", (friendList: Friend[]) => {
         this.usersService.updateFriendsList(friendList);
+        this.chatService.getFriends();
       })
 
       this.hubConnection.on("InvitationsRefreshed", (invitationsList: Friend[]) => {

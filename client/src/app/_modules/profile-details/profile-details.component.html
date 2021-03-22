@@ -16,7 +16,10 @@
             <nb-action>
                 <h5>{{(profileService.profile$| async)?.userName}}</h5>
             </nb-action>
-            <nb-action icon="person-add-outline" (click)="addFriend()">
+            <nb-action icon="person-add-outline" (click)="addFriend()" [disabled]="(profileService.profile$|async)?.isInvited">
+            </nb-action>
+            <nb-action *ngIf="(profileService.profile$|async)?.isInvited">
+                <label class="label">Invitation has been sent</label>
             </nb-action>
         </nb-actions>
     </ng-container>

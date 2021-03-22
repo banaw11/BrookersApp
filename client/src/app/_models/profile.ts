@@ -3,5 +3,6 @@ export interface Profile{
     userId: number,
     image: string,
     isOwner: boolean,
-    isFriend: boolean
+    isFriend: boolean,
+    isInvited: boolean
 }

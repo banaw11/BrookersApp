@@ -25,19 +25,23 @@ namespace API.Repositories
 
         public async void AcceptInvite(int contextUserId, int userId)
         {
-            var relation = await _context.Friends.FindAsync(new { contextUserId, userId });
-            relation.IsConfirmed = true;
-            _context.Entry(relation).State = EntityState.Modified;
+            var relation = await _context.Friends.FindAsync(userId, contextUserId);
+            if(relation != null)
+            {
+                relation.IsConfirmed = true;
+                _context.Entry(relation).State = EntityState.Modified;
+            }
+            
         }
 
-        public  void AddFriend(int userId, int friendId)
+        public  void AddFriend(int friendId, int userId)
         {
             _context.Friends.Add(new Friend { FriendId = friendId, UserId = userId, IsConfirmed = false });
         }
 
         public async void DeclineInvite(int contextUserId, int userId)
         {
-            var relation = await _context.Friends.FindAsync(new { contextUserId, userId });
+            var relation = await _context.Friends.FindAsync(contextUserId, userId);
             _context.Friends.Remove(relation);
         }
 
@@ -58,8 +62,8 @@ namespace API.Repositories
                 .FirstOrDefaultAsync();
             return  result.FriendsAccepted
                 .Where(x => x.IsConfirmed == true)
-                .Select(x => x.FriendId).ToList()
-                .Concat(result.FriendsInvited.Where(x => x.IsConfirmed == true).Select(x => x.UserId)).ToList();
+                .Select(x => x.UserId).ToList()
+                .Concat(result.FriendsInvited.Where(x => x.IsConfirmed == true).Select(x => x.FriendId)).ToList();
         }
 
         public async Task<ICollection<FriendDto>> GetFriends(int userId)
@@ -95,11 +99,17 @@ namespace API.Repositories
                  .Select(x => new ProfileDto { UserName = x.UserName, UserId = x.Id, Image = x.Avatar, IsOwner= isOwner})
                  .FirstOrDefaultAsync();
 
-            if(!isOwner){
-                var friends = await GetFriendIds(callerId);
-                profile.IsFriend = friends.Any(x => x == profile.UserId);
+            if (!isOwner)
+            {
+                profile.IsFriend = await IsFriend(callerId, profile.UserId);
+                profile.IsInvited = await IsInvited(callerId, profile.UserId);
             }
-            else profile.IsFriend = false;
+            else
+            {
+                profile.IsFriend = false;
+                profile.IsInvited = false;
+            }
+            
             
             return profile;
         }
@@ -112,6 +122,14 @@ namespace API.Repositories
                 return true;
 
             return false;
+        }
+
+        public async Task<bool> IsInvited(int contextId, int userId)
+        {
+            var relation = await _context.Friends.FindAsync(contextId, userId);
+            if (relation == null)
+                return false;
+            return !relation.IsConfirmed;
         }
     }
 }

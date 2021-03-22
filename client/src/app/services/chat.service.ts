@@ -28,7 +28,9 @@ messageThread: MessageThread = {
 }
   pressenceList: number[];
   chatSbState = new BehaviorSubject<NbSidebarState>('collapsed');
-  constructor(private http: HttpClient, private usersService: UsersService) { }
+  constructor(private http: HttpClient, private usersService: UsersService) {
+    
+   }
 
   getFriends(){
     this.usersService.currentUser$.subscribe( user => {

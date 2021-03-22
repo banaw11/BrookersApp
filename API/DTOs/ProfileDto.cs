@@ -12,5 +12,6 @@ namespace API.DTOs
         public string Image { get; set; }
         public bool IsOwner { get; set; }
         public bool IsFriend { get; set; }
+        public bool IsInvited { get; set; }
     }
 }

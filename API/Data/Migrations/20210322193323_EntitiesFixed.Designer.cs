@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210317214516_EntitiesFixed")]
+    [Migration("20210322193323_EntitiesFixed")]
     partial class EntitiesFixed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -323,13 +323,13 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "FriendUser")
-                        .WithMany("FriendsInvited")
+                        .WithMany("FriendsAccepted")
                         .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entities.AppUser", "User")
-                        .WithMany("FriendsAccepted")
+                        .WithMany("FriendsInvited")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

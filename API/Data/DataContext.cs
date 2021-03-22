@@ -40,12 +40,12 @@ namespace API.Data
 
             builder.Entity<Friend>()
                 .HasOne(x => x.User)
-                .WithMany(x => x.FriendsAccepted)
+                .WithMany(x => x.FriendsInvited)
                 .HasForeignKey(x => x.UserId);
 
             builder.Entity<Friend>()
                 .HasOne(x => x.FriendUser)
-                .WithMany(x => x.FriendsInvited)
+                .WithMany(x => x.FriendsAccepted)
                 .HasForeignKey(x => x.FriendId);
 
             builder.Entity<Message>()

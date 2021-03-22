@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Friend } from 'src/app/_models/friend';
+import { Profile } from 'src/app/_models/profile';
 
 
 @Component({
@@ -41,11 +42,26 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   deleteFriend(){
-    console.log("chuj");
-    this.profileService.deleteFriend();
+    this.profileService.deleteFriend().subscribe((response: boolean) => {
+      if(response){
+        this.refreshProfile();
+      }
+    })
   }
 
   addFriend(){
-    this.profileService.addFriend();
+    this.profileService.addFriend().subscribe((response: boolean) => {
+      if(response){
+        this.refreshProfile();
+      }
+    })
+  }
+
+  refreshProfile(){
+    let tempProfile : Profile;
+    this.profileService.profile$.subscribe(p => {
+      tempProfile = p;
+    }).unsubscribe();
+    this.profileService.getProfile(tempProfile.userName);
   }
 }

@@ -321,13 +321,13 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Friend", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "FriendUser")
-                        .WithMany("FriendsInvited")
+                        .WithMany("FriendsAccepted")
                         .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entities.AppUser", "User")
-                        .WithMany("FriendsAccepted")
+                        .WithMany("FriendsInvited")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

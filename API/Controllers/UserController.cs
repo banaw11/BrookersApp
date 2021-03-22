@@ -41,12 +41,12 @@ namespace API.Controllers
             if (await _unitOfWork.UserRepository.GetUserByIdAsync(userId) == null) return BadRequest("User not found");
             if (await _unitOfWork.UserRepository.IsFriend(contextUserId, userId)) return BadRequest("User is already added to friends");
 
-            _unitOfWork.UserRepository.AddFriend(contextUserId, userId);
+            _unitOfWork.UserRepository.AddFriend(userId, contextUserId);
             if (_unitOfWork.hasChanges())
                 if (await _unitOfWork.Complete())
                 {
                     await _unitOfHub.InviteService.SendInvite(contextUserId, userId);
-                    return Ok();
+                    return Ok(true);
                 }
 
             return BadRequest("Couldn't send invite to friends");
@@ -73,7 +73,7 @@ namespace API.Controllers
                         await _unitOfHub.NotificationsService.RefreshFriends(contextUserId);
                     }
                     await _unitOfHub.NotificationsService.RefreshInvitations(contextUserId);
-                    return Ok();
+                    return Ok(true);
                 }
 
             return BadRequest("Couldn't answer on invite");
@@ -95,7 +95,7 @@ namespace API.Controllers
                 {
                     await _unitOfHub.NotificationsService.RefreshFriends(userId);
                     await _unitOfHub.NotificationsService.RefreshFriends(contextUserId);
-                    return Ok();
+                    return Ok(true);
                 }
 
             return BadRequest("Couldn't delete user from friends");

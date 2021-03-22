@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Profile } from '../_models/profile';
 
@@ -20,6 +20,7 @@ export class ProfileService {
   getProfile(userName: string){
     this.http.get<Profile>(this.baseUrl + 'user/' + userName).pipe(take(1))
       .subscribe((profile: Profile) => {
+        console.log(profile)
         this.profileSource.next(profile);
     })
  }
@@ -29,7 +30,8 @@ export class ProfileService {
  }
 
  recoveryProfile(){
-   this.profileSource.next(JSON.parse(localStorage.getItem('profile')))
+   let profile: Profile = JSON.parse(localStorage.getItem('profile'));
+   this.getProfile(profile.userName);
    localStorage.removeItem('profile');
  }
 
@@ -38,15 +40,19 @@ export class ProfileService {
    this.profile$.subscribe(p => {
      friendId = p.userId;
    }).unsubscribe();
-    this.http.post(this.baseUrl+'user/send-invite/'+friendId, {});
+    return this.http.post(this.baseUrl+'user/send-invite/'+friendId, {}).pipe(
+      map((response: boolean) => {return response})
+    );
  }
 
  deleteFriend(){
-  let friendId: number
+  let profile: Profile
   this.profile$.subscribe(p => {
-    friendId = p.userId;
+    profile = p;
   }).unsubscribe();
-  this.http.post(this.baseUrl+'user/delete-friend/'+friendId, {});
+  return this.http.post(this.baseUrl+"user/delete-friend/"+profile.userId, {}).pipe(
+    map((response: boolean) => { return response})
+  )
  }
 
 }
